@@ -17,7 +17,7 @@ for i = 1 : 1 : 3600
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                              Rise¡G0~120                                %
+%                              Riseï¼š0~120                                %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 for i=1:1200
@@ -30,7 +30,7 @@ for i=1:1200
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                              Fall¡G190~310                              %
+%                              Fallï¼š190~310                              %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 for i=1701:3000
@@ -43,7 +43,7 @@ for i=1701:3000
  end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                           High Dwell¡G120~190                           %
+%                           High Dwellï¼š120~190                           %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 for i=1201:1700
@@ -56,7 +56,7 @@ for i=1201:1700
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                            Low Dwell¡G 300~360                          %
+%                            Low Dwellï¼š 300~360                          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 for i=3001:3600
@@ -75,37 +75,31 @@ end
 figure;
 axis equal;
 plot(theta/(2*pi)*360,S,'LineWidth',2);
-xlabel('\theta  (deg)','fontname','Times New Roman','fontsize',20');
-ylabel('S  (\theta)(mm)','fontname','Times New Roman','fontsize',20');
-xticks(0:60:360);
+xlabel('\theta(deg)','fontname','Times New Roman','fontsize',20');
+ylabel('S(\theta)(mm)','fontname','Times New Roman','fontsize',20');
 
 figure;
 plot(theta/(2*pi)*360,q,'LineWidth',2);
-xlabel('\theta  (deg)','fontname','Times New Roman','fontsize',20');
-ylabel('V  (mm/sec)','fontname','Times New Roman','fontsize',20');
-xticks(0:60:360);
+xlabel('\theta(deg)','fontname','Times New Roman','fontsize',20');
+ylabel('V(mm/sec)','fontname','Times New Roman','fontsize',20');
 
 figure;
 plot(theta/(2*pi)*360,a,'LineWidth',2);
-xlabel('\theta  (deg)','fontname','Times New Roman','fontsize',20');
-ylabel('a  (m/sec^2)','fontname','Times New Roman','fontsize',20');
-xticks(0:60:360);
-
-
+xlabel('\theta(deg)','fontname','Times New Roman','fontsize',20');
+ylabel('a(m/sec^2)','fontname','Times New Roman','fontsize',20');
 
 figure;
 hold on 
 axis ([-80 60 -60 80]);
-plot([4,4],[-8,0],'LineWidth',2,'Color','b')
-plot([-4,-4],[-8,0],'LineWidth',2,'Color','b')
-plot([-8,8],[-8,-8],'LineWidth',2,'Color','b')
-plot([-8,-4],[-11,-8],'LineWidth',2,'Color','r')
-plot([-4,0],[-11,-8],'LineWidth',2,'Color','r')
-plot([0,4],[-11,-8],'LineWidth',2,'Color','r')
-plot([4,8],[-11,-8],'LineWidth',2,'Color','r')
-plot(4.*cos(0 : 0.01 : 2*pi) , 4.*sin( 0: 0.01 : 2*pi),'LineWidth',2,'Color','b');
+plot([4,4],[-8,0],'LineWidth',2,'')
+plot([-4,-4],[-8,0],'LineWidth',2)
+plot([-8,8],[-8,-8],'LineWidth',2)
+plot([-8,-4],[-11,-8],'LineWidth',2)
+plot([-4,0],[-11,-8],'LineWidth',2)
+plot([0,4],[-11,-8],'LineWidth',2)
+plot([4,8],[-11,-8],'LineWidth',2)
+plot(4.*cos(0 : 0.01 : 2*pi) , 4.*sin( 0: 0.01 : 2*pi),'LineWidth',2);
 plot(2.5.*cos(0 : 0.01 : 2*pi) , 2.5.*sin( 0: 0.01 : 2*pi),'LineWidth',2);
-plot(40.*cos(0 : 0.01 : 2*pi) , 40.*sin( 0: 0.01 : 2*pi),'LineWidth',2,'LineStyle','--');
 
 plot(X,Y,'LineWidth',2);axis square
 xlabel('X','fontname','Times New Roman','fontsize',20');
