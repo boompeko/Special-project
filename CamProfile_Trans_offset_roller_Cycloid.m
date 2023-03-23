@@ -84,39 +84,53 @@ plot(theta/(2*pi)*360,S,'LineWidth',2);
 xlabel('\theta  (deg)','fontname','Times New Roman','fontsize',20');
 ylabel('S  (\theta)(mm)','fontname','Times New Roman','fontsize',20');
 xticks(0:60:360);
+ylim([0,25]);
+xlim([0,360]);
+box on;
+grid on;
+
 
 figure;
 plot(theta/(2*pi)*360,q,'LineWidth',2);
 xlabel('\theta  (deg)','fontname','Times New Roman','fontsize',20');
 ylabel('V  (mm/sec)','fontname','Times New Roman','fontsize',20');
 xticks(0:60:360);
+xlim([0,360]);
+box on;
+grid on;
+
 
 figure;
 plot(theta/(2*pi)*360,a,'LineWidth',2);
 xlabel('\theta  (deg)','fontname','Times New Roman','fontsize',20');
 ylabel('a  (m/sec^2)','fontname','Times New Roman','fontsize',20');
 xticks(0:60:360);
+xlim([0,360]);
+box on;
+grid on;
 
 
 
 figure;
 hold on 
 axis ([-80 60 -60 80]);
-plot([4,4],[-8,0],'LineWidth',2,'Color','b')
-plot([-4,-4],[-8,0],'LineWidth',2,'Color','b')
-plot([-8,8],[-8,-8],'LineWidth',2,'Color','b')
-plot([-8,-4],[-11,-8],'LineWidth',2,'Color','r')
-plot([-4,0],[-11,-8],'LineWidth',2,'Color','r')
-plot([0,4],[-11,-8],'LineWidth',2,'Color','r')
-plot([4,8],[-11,-8],'LineWidth',2,'Color','r')
-plot(4.*cos(0 : 0.01 : 2*pi) , 4.*sin( 0: 0.01 : 2*pi),'LineWidth',2,'Color','b');
-plot(2.5.*cos(0 : 0.01 : 2*pi) , 2.5.*sin( 0: 0.01 : 2*pi),'LineWidth',2);
+plot([4,4],[-8,0],'LineWidth',2,'Color','k')
+plot([-4,-4],[-8,0],'LineWidth',2,'Color','k')
+plot([-8,8],[-8,-8],'LineWidth',2,'Color','k')
+plot([-8,-4],[-11,-8],'LineWidth',2,'Color','k')
+plot([-4,0],[-11,-8],'LineWidth',2,'Color','k')
+plot([0,4],[-11,-8],'LineWidth',2,'Color','k')
+plot([4,8],[-11,-8],'LineWidth',2,'Color','k')
+plot(4.*cos(0 : 0.01 : 2*pi) , 4.*sin( 0: 0.01 : 2*pi),'LineWidth',2,'Color','k');
+plot(2.5.*cos(0 : 0.01 : 2*pi) , 2.5.*sin( 0: 0.01 : 2*pi),'LineWidth',2,'Color','k');
 plot(40.*cos(0 : 0.01 : 2*pi) , 40.*sin( 0: 0.01 : 2*pi),'LineWidth',2,'LineStyle','--');
 
 plot(X,Y,'LineWidth',2);axis square
 xlabel('X','fontname','Times New Roman','fontsize',20');
 ylabel('Y','fontname','Times New Roman','fontsize',20');
 title('cam profiles','fontname','Times New Roman','fontsize',20');
+box on;
+grid on;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                           Generate contour.scr                          %
