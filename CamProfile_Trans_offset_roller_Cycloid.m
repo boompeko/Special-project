@@ -15,12 +15,12 @@ rf = 10;
 offset = 12;
 
 
-for i = 1 : 1 : 3600
+for i = 1 : 1 : 3601
     theta(i)=i*2*pi/3600;
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                              Rise¡G0~120                                %
+%                              Rise¡G0~100                                %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 for i=1:1000
@@ -29,12 +29,14 @@ for i=1:1000
     q(i)=h/beta-h/beta*cos(2*pi*theta(i)/beta);
     a(i)=2*pi*h/(beta^2)*sin(2*pi*theta(i)/beta);
     phi(i) = atan((q(i)-offset)/L(i));
-    X(i)=L(i)*cos(theta(i))-offset*sin(theta(i))-rf*cos(theta(i)-phi(i));
-    Y(i)=L(i)*sin(theta(i))+offset*cos(theta(i))-rf*sin(theta(i)-phi(i));
+    X(i)=L(i)*cos(theta(i))+offset*cos(theta(i)+pi/2)+rf*cos(theta(i)-phi(i)+pi);
+    Y(i)=L(i)*sin(theta(i))+offset*sin(theta(i)+pi/2)+rf*sin(theta(i)-phi(i)+pi);
+    R(i)=((X(i))^2+(Y(i))^2)^0.5;
+    P(i)=((L(i)*cos(theta(i))+offset*cos(theta(i)+pi/2))^2+(L(i)*sin(theta(i))+offset*sin(theta(i)+pi/2))^2)^0.5;
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                              Fall¡G190~310                              %
+%                              Fall¡G190~300                              %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 for i=1901:3000
@@ -43,11 +45,13 @@ for i=1901:3000
     q(i)=-((h/(beta2)-h/(beta2)*cos(2*pi*(theta(i)-theta_D)/(beta2))));
     a(i)=-2*pi*h/((beta2)^2)*sin(2*pi*(theta(i)-theta_D)/(beta2));
     phi(i) = atan((q(i)-offset)/L(i));
-    X(i)=L(i)*cos(theta(i))-offset*sin(theta(i))-rf*cos(theta(i)-phi(i));
-    Y(i)=L(i)*sin(theta(i))+offset*cos(theta(i))-rf*sin(theta(i)-phi(i));
+    X(i)=L(i)*cos(theta(i))+offset*cos(theta(i)+pi/2)+rf*cos(theta(i)-phi(i)+pi);
+    Y(i)=L(i)*sin(theta(i))+offset*sin(theta(i)+pi/2)+rf*sin(theta(i)-phi(i)+pi);
+    R(i)=((X(i))^2+(Y(i))^2)^0.5;
+    P(i)=((L(i)*cos(theta(i))+offset*cos(theta(i)+pi/2))^2+(L(i)*sin(theta(i))+offset*sin(theta(i)+pi/2))^2)^0.5;
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                           High Dwell¡G120~190                           %
+%                           High Dwell¡G100~190                           %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 for i=1001:1900
@@ -56,22 +60,26 @@ for i=1001:1900
     q(i)=0;
     a(i)=0;
     phi(i) = atan((q(i)-offset)/L(i));
-    X(i)=L(i)*cos(theta(i))-offset*sin(theta(i))-rf*cos(theta(i)-phi(i));
-    Y(i)=L(i)*sin(theta(i))+offset*cos(theta(i))-rf*sin(theta(i)-phi(i));
+    X(i)=L(i)*cos(theta(i))+offset*cos(theta(i)+pi/2)+rf*cos(theta(i)-phi(i)+pi);
+    Y(i)=L(i)*sin(theta(i))+offset*sin(theta(i)+pi/2)+rf*sin(theta(i)-phi(i)+pi);
+    R(i)=((X(i))^2+(Y(i))^2)^0.5;
+    P(i)=((L(i)*cos(theta(i))+offset*cos(theta(i)+pi/2))^2+(L(i)*sin(theta(i))+offset*sin(theta(i)+pi/2))^2)^0.5;
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                            Low Dwell¡G 300~360                          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-for i=3001:3600
+for i=3001:3601
     S(i)=0;
     L(i)=((rf+rb)^2-offset^2)^0.5+S(i);
     q(i)=0;
     a(i)=0;
     phi(i) = atan((q(i)-offset)/L(i));
-    X(i)=L(i)*cos(theta(i))-offset*sin(theta(i))-rf*cos(theta(i)-phi(i));
-    Y(i)=L(i)*sin(theta(i))+offset*cos(theta(i))-rf*sin(theta(i)-phi(i));
+    X(i)=L(i)*cos(theta(i))+offset*cos(theta(i)+pi/2)+rf*cos(theta(i)-phi(i)+pi);
+    Y(i)=L(i)*sin(theta(i))+offset*sin(theta(i)+pi/2)+rf*sin(theta(i)-phi(i)+pi);
+    R(i)=((X(i))^2+(Y(i))^2)^0.5;
+    P(i)=((L(i)*cos(theta(i))+offset*cos(theta(i)+pi/2))^2+(L(i)*sin(theta(i))+offset*sin(theta(i)+pi/2))^2)^0.5;
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
