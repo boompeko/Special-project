@@ -1,0 +1,94 @@
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
+
+# 定義參數範圍
+regularization_params = [0.01, 0.1, 1.0, 10.0]  # 正則化參數候選值
+
+num_iterations = [100, 500, 1000]  # 訓練迭代次數候選值
+
+best_accuracy = 0.0
+best_params = {}
+
+# 調整參數
+for ratio in range(10,100,10):
+    for reg_param in regularization_params:
+    
+        for num_iter in num_iterations:
+            # 創建 logistic regression 模型
+            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=(ratio/100), random_state=71)
+            
+            model = LogisticRegression(C=reg_param,  max_iter=num_iter)
+            model.fit(X_train, y_train)
+
+            # 在驗證集上評估模型
+            y_pred = model.predict(X_test)
+            accuracy = accuracy_score(y_test, y_pred)
+
+            # 更新最佳參數組合
+            if accuracy > best_accuracy:
+                best_accuracy = accuracy
+                best_params = {
+                    'C': reg_param,
+                    'learning_rate': learning_rate,
+                    'max_iter': num_iter
+                }
+
+
+
+print(best_params)
+print('best_mse',best_mse) 
+print('best_ratio',best_ratio)
+
+
+
+# 使用最佳參數重新擬合模型
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=(best_ratio/100), random_state=71)
+best_model = LogisticRegression(**best_params)
+best_model.fit(X_train, y_train)
+
+
+# 訓練模型
+best_model.fit(X_train, y_train)
+
+y_Fpred = best_model.predict(X_future)
+
+# 計算準確度
+accuracy = accuracy_score(y_future, y_Fpred)
+
+print('Precipitatio_mse',accuracy)
+
+def plot_feature_importances(model):
+    n_features = ['Anomaly','Maximun Temperature','Anomaly.1','Anomaly.2','Average Temperature_x','encode_state','Year','Month','Minimum Temperature','Lastmonth_Average Temperature']
+    plt.barh(n_features, model.feature_importances_, align='center')
+    plt.xlabel("Feature importance")
+    plt.ylabel("Feature")
+    plt.show()
+
+
+plot_feature_importances(best_model)
+
+data_list = y_Fpred.tolist()
+
+data = np.zeros((len(data_list),4))
+
+for i in range(len(data_list)):
+    data[i,0] = data_list[i]
+
+for i in range(len(data_list)):
+    data[i,1] = future['encode_state'][i]
+
+for i in range(len(data_list)):
+    data[i,2] = future['Year'][i]
+
+for i in range(len(data_list)):
+    data[i,3] = future['Month'][i]
+
+
+
+
+columns = ['Precipitation','encode_state','Year','Month']
+result = pd.DataFrame(columns=columns, data=data)
+result.to_csv('result_LogisticRegression.csv',encoding = 'gbk')
+
