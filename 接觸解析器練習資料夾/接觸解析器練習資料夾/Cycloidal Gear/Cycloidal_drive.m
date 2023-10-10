@@ -33,3 +33,9 @@ yticks(-50:10:50);
 
 box on;
 grid on;
+
+
+fid = fopen('Cycloidal_Drive.scr','w');
+fprintf(fid,'spline ');
+fprintf(fid,'%f,%f\n', [x; y]);
+fclose(fid);
