@@ -4,7 +4,7 @@ clc;
 
 
 
-N = 10 ;%Number of rollers
+N = 13 ;%Number of rollers
 Rr = 5 ;%Radius of the roller
 R = 40 ;%Radius of the rollers PCD (Pitch Circle Diamater)
 E =2 ;% Eccentricity - offset from input shaft to a cycloidal disk
