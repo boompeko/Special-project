@@ -15,8 +15,8 @@ for i = 1 : 1 : 361
     
 
 
-    x(i) = (R*cos(t(i)))-(Rr*cos(t(i)+atan(sin((1-N)*t(i))/((R/(E*N))-cos((1-N)*t(i))))))-(E*cos(N*t(i)));
-    y(i) = (-R*sin(t(i)))+(Rr*sin(t(i)+atan(sin((1-N)*t(i))/((R/(E*N))-cos((1-N)*t(i))))))+(E*sin(N*t(i)));
+    x(i) = (R*cos(t(i)))+(Rr*cos(t(i)+atan(sin((1+N)*t(i))/((R/(E*N))-cos((1+N)*t(i))))))+(E*cos(N*t(i)));
+    y(i) = (R*sin(t(i)))+(Rr*sin(t(i)+atan(sin((1+N)*t(i))/((R/(E*N))-cos((1+N)*t(i))))))-(E*sin(N*t(i)));
 
 end
 
