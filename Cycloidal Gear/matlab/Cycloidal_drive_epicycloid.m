@@ -22,7 +22,7 @@ E =4 ;% Eccentricity - offset from input shaft to a cycloidal disk
 
 
 CUT = 5;%切割倍數
-tick = 10;
+tick = 20;
 SHOW = sprintf("N = %d, Rr = %d, R = %d, E = %d", N, Rr, R, E);
 
 
