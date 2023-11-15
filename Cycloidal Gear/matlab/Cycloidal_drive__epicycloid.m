@@ -82,7 +82,7 @@ box on;
 grid on;
 axis square;
 
-file_name = 'contour.png';
+file_name = 'contour_epicycloid.png';
 file_path = 'C:\Users\JOU\Desktop\git\Special-project\Cycloidal Gear\movie\pic'; 
 
 full_file_path = fullfile(file_path, file_name);
@@ -118,7 +118,7 @@ box on;
 grid on;
 axis square;
 
-file_name = 'radius_of_curvature.png';
+file_name = 'radius_of_curvature_epicycloid.png';
 file_path = 'C:\Users\JOU\Desktop\git\Special-project\Cycloidal Gear\movie\pic'; 
 
 full_file_path = fullfile(file_path, file_name);
@@ -210,14 +210,14 @@ for i=1:1:ceil(360*CUT/(N-1))
     I=frame2im(F);
     [I,map]=rgb2ind(I,256);
     output_folder = 'C:\Users\JOU\Desktop\git\Special-project\Cycloidal Gear\movie';
-    giffilename = fullfile(output_folder, 'move_pic.gif');
+    giffilename = fullfile(output_folder, 'move_pic_epicycloid.gif');
     if i==1
         imwrite(I,map,giffilename,'gif','writeMode','overwrite','LoopCount',inf,'delaytime',0.0001/CUT,'loopcount',inf);
     else
         imwrite(I,map,giffilename,'gif','writeMode','append','delaytime',0.0001/CUT);
     end
 
-    fprintf("countdown %d \n",(ceil(360*CUT/(N-1))-i))
+    fprintf("epicycloid_countdown %d \n",(ceil(360*CUT/(N-1))-i))
     
     
 
