@@ -14,7 +14,7 @@ N = 15 ;%Number of rollers
 Rr = 9 ;%Radius of the roller
 R = 120 ;%Radius of the rollers PCD (Pitch Circle Diamater)
 E =4 ;% Eccentricity - offset from input shaft to a cycloidal disk
-Q = E*N;
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %作圖
@@ -37,7 +37,7 @@ for i = 1 : 1 : ((360*CUT)+1)
     phi(i) = atan(sin((1-N)*t(i))/((R/(E*N))-cos((1-N)*t(i))));
    
     
-    L(i) = (R^2+Q^2-2*R*Q*cos((1-N)*t(i)))^0.5 - Rr;
+    L(i) = (R^2+(E*N)^2-2*R*(E*N)*cos((1-N)*t(i)))^0.5 - Rr;
 
     X(i) = cos(N*t(i))*E*(N-1) + cos(t(i)+phi(i))*(L(i));
     Y(i) = -sin(N*t(i))*E*(N-1) - sin(t(i)+phi(i))*(L(i));
