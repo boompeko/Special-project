@@ -68,7 +68,7 @@ end
 
 
 a = figure('Visible', 'on');
-plot(x,y,'LineWidth',2);
+plot(x,y,'LineWidth',2,'Color','b');
 xlabel('X','fontname','Times New Roman','fontsize',20');
 ylabel('Y','fontname','Times New Roman','fontsize',20');
 title('擺線輪輪廓',SHOW);

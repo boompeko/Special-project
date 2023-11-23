@@ -70,9 +70,11 @@ end
 
 
 a = figure('Visible', 'on');
-plot(x,y,'LineWidth',2);
+hold on
+plot(x,y,'LineWidth',2,'Color','b');
 xlabel('X','fontname','Times New Roman','fontsize',20');
 ylabel('Y','fontname','Times New Roman','fontsize',20');
+plot(1.15*R.*cos(0 : 0.01 : 2*pi) , 1.15*R.*sin( 0: 0.01 : 2*pi) ,'LineWidth',2,'Color','b');
 title('擺線輪輪廓',SHOW);
 axis equal;
 xlim([-(1.3*R),(1.3*R)]);
@@ -83,7 +85,7 @@ yticks(-2*R:tick:2*R);
 box on;
 grid on;
 axis square;
-
+hold off
 file_name = 'contour_hypocycloid.png';
 
 
