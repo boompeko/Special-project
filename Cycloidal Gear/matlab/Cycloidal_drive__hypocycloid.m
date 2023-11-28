@@ -21,11 +21,11 @@ E =10 ;% Eccentricity - offset from input shaft to a cycloidal disk
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-CUT = 10;%切割倍數
+CUT = 5;%切割倍數
 tick = 20;
 SHOW = sprintf("N = %d, Rr = %d, R = %d, E = %d", N, Rr, R, E);
-file_path = 'C:\Users\JOU\Desktop\git\Special-project\Cycloidal Gear\output'; %家裡電腦
-%file_path = 'C:\Users\JohnnyJou\Documents\GitHub\Special-project\Cycloidal Gear\output';  %筆記電腦
+%file_path = 'C:\Users\JOU\Desktop\git\Special-project\Cycloidal Gear\output'; %家裡電腦
+file_path = 'C:\Users\Johnny Jou\Documents\GitHub\Special-project\Cycloidal Gear\output';  %筆記電腦
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %計算曲率中心和接觸點
@@ -74,7 +74,7 @@ hold on
 plot(x,y,'LineWidth',2,'Color','b');
 xlabel('X','fontname','Times New Roman','fontsize',20');
 ylabel('Y','fontname','Times New Roman','fontsize',20');
-title('擺線輪輪廓',SHOW,'fontsize',16);
+title(SHOW,'擺線輪輪廓','fontsize',16);
 axis equal;
 xlim([-(1.3*R),(1.3*R)]);
 ylim([-(1.3*R),(1.3*R)]);
@@ -111,7 +111,7 @@ b = figure('Visible', 'on');
 plot(z,bRc,'LineWidth',2);
 xlabel('cycloidal disk rotation angle(θ)','fontname','Times New Roman','fontsize',20');
 ylabel('radius of curvature','fontname','Times New Roman','fontsize',20');
-title('曲率半徑',SHOW,'fontsize',16);
+title(SHOW,'曲率半徑','fontsize',16);
 xlim([0,ceil(360/(N+1))-1]);
 ylim([-1.3*R,1.3*R]);
 xticks(0:5:(360/(N-1)));
@@ -199,7 +199,7 @@ for i=1:1:ceil(360*CUT/(N+1))
     axis equal;
     xlabel('X','fontname','Times New Roman','fontsize',20');
     ylabel('Y','fontname','Times New Roman','fontsize',20');
-    title('等效連桿',SHOW);
+    title(SHOW,'等效連桿');
     
     xlim([-(R+R/8),R+R/8]);
     ylim([-(R+R/8),(R+R/8)]);
