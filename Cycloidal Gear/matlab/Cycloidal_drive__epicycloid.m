@@ -21,11 +21,11 @@ E =8 ;% Eccentricity - offset from input shaft to a cycloidal disk
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-CUT = 15;%切割倍數
-tick = 20;
+CUT = 5;%切割倍數
+tick = 40;
 SHOW = sprintf("N = %d, Rr = %d, R = %d, E = %d", N, Rr, R, E);
-%file_path = 'C:\Users\JOU\Desktop\git\Special-project\Cycloidal Gear\output'; %家裡電腦
-file_path = 'C:\Users\Johnny Jou\Documents\GitHub\Special-project\Cycloidal Gear\output';  %筆記電腦
+file_path = 'C:\Users\JOU\Desktop\git\Special-project\Cycloidal Gear\output'; %家裡電腦
+%file_path = 'C:\Users\Johnny Jou\Documents\GitHub\Special-project\Cycloidal Gear\output';  %筆記電腦
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %計算曲率中心和接觸點
@@ -70,9 +70,9 @@ end
 
 a = figure('Visible', 'on');
 plot(x,y,'LineWidth',2,'Color','b');
-xlabel('X','fontname','Times New Roman','fontsize',20');
-ylabel('Y','fontname','Times New Roman','fontsize',20');
-title(SHOW,'擺線輪輪廓','FontSize',16);
+xlabel('X (mm)','fontname','Times New Roman','fontsize',20');
+ylabel('Y (mm)','fontname','Times New Roman','fontsize',20');
+title(SHOW,'外擺線輪輪廓','FontSize',16);
 axis equal;
 xlim([-(R+R/10),(R+R/10)]);
 ylim([-(R+R/10),(R+R/10)]);
@@ -107,8 +107,8 @@ end
 
 b = figure('Visible', 'on');
 plot(z,bRc,'LineWidth',2);
-xlabel('cycloidal disk rotation angle(θ)','fontname','Times New Roman','fontsize',20');
-ylabel('radius of curvature','fontname','Times New Roman','fontsize',20');
+xlabel('cycloidal disk rotation angle (θ)','fontname','Times New Roman','fontsize',20');
+ylabel('radius of curvature (mm)','fontname','Times New Roman','fontsize',20');
 title(SHOW,'曲率半徑','FontSize',16);
 xlim([0,ceil(360/(N-1))]);
 ylim([-R,R]);
@@ -195,8 +195,8 @@ for i=1:1:ceil(360*CUT/(N-1))
     box on;
     grid on;
     axis equal;
-    xlabel('X','fontname','Times New Roman','fontsize',20');
-    ylabel('Y','fontname','Times New Roman','fontsize',20');
+    xlabel('X (mm)','fontname','Times New Roman','fontsize',20');
+    ylabel('Y (mm)','fontname','Times New Roman','fontsize',20');
     title(SHOW,'等效連桿');
     
     xlim([-2*E,1.5*R]);

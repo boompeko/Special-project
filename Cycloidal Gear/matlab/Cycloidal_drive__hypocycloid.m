@@ -12,8 +12,8 @@ close all;
 
 N = 13 ;%Number of rollers
 Rr = 9 ;%Radius of the roller
-R = 140 ;%Radius of the rollers PCD (Pitch Circle Diamater)
-E =10 ;% Eccentricity - offset from input shaft to a cycloidal disk
+R = 120 ;%Radius of the rollers PCD (Pitch Circle Diamater)
+E =8 ;% Eccentricity - offset from input shaft to a cycloidal disk
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -21,11 +21,11 @@ E =10 ;% Eccentricity - offset from input shaft to a cycloidal disk
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-CUT = 15;%切割倍數
-tick = 20;
+CUT = 5;%切割倍數
+tick = 40;
 SHOW = sprintf("N = %d, Rr = %d, R = %d, E = %d", N, Rr, R, E);
-%file_path = 'C:\Users\JOU\Desktop\git\Special-project\Cycloidal Gear\output'; %家裡電腦
-file_path = 'C:\Users\Johnny Jou\Documents\GitHub\Special-project\Cycloidal Gear\output';  %筆記電腦
+file_path = 'C:\Users\JOU\Desktop\git\Special-project\Cycloidal Gear\output'; %家裡電腦
+%file_path = 'C:\Users\Johnny Jou\Documents\GitHub\Special-project\Cycloidal Gear\output';  %筆記電腦
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %計算曲率中心和接觸點
@@ -72,9 +72,9 @@ end
 a = figure('Visible', 'on');
 hold on
 plot(x,y,'LineWidth',2,'Color','b');
-xlabel('X','fontname','Times New Roman','fontsize',20');
-ylabel('Y','fontname','Times New Roman','fontsize',20');
-title(SHOW,'擺線輪輪廓','fontsize',16);
+xlabel('X (mm)','fontname','Times New Roman','fontsize',20');
+ylabel('Y (mm)','fontname','Times New Roman','fontsize',20');
+title(SHOW,'內擺線輪輪廓','fontsize',16);
 axis equal;
 xlim([-(1.3*R),(1.3*R)]);
 ylim([-(1.3*R),(1.3*R)]);
@@ -109,8 +109,8 @@ end
 
 b = figure('Visible', 'on');
 plot(z,bRc,'LineWidth',2);
-xlabel('cycloidal disk rotation angle(θ)','fontname','Times New Roman','fontsize',20');
-ylabel('radius of curvature','fontname','Times New Roman','fontsize',20');
+xlabel('cycloidal disk rotation angle (θ)','fontname','Times New Roman','fontsize',20');
+ylabel('radius of curvature (mm)','fontname','Times New Roman','fontsize',20');
 title(SHOW,'曲率半徑','fontsize',16);
 xlim([0,ceil(360/(N+1))-1]);
 ylim([-1.3*R,1.3*R]);
@@ -197,12 +197,12 @@ for i=1:1:ceil(360*CUT/(N+1))
     box on;
     grid on;
     axis equal;
-    xlabel('X','fontname','Times New Roman','fontsize',20');
-    ylabel('Y','fontname','Times New Roman','fontsize',20');
+    xlabel('X (mm)','fontname','Times New Roman','fontsize',20');
+    ylabel('Y (mm)','fontname','Times New Roman','fontsize',20');
     title(SHOW,'等效連桿');
     
-    xlim([-(R+R/8),R+R/8]);
-    ylim([-(R+R/8),(R+R/8)]);
+    xlim([-(R+R/5+2*E),R+R/5+2*E]);
+    ylim([-(R+R/8+2*E),(R+R/8)+2*E]);
     xticks(-2*R:tick:2*R);
     yticks(-2*R:tick:2*R);
     
