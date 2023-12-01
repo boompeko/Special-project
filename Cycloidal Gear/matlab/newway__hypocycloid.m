@@ -43,6 +43,11 @@ for i = 1 : 1 : ((360*CUT)+1)
     X(i) = cos(N*t(i))*E*(N+1) + cos(t(i)-phi(i))*(L(i));
     Y(i) = -sin(N*t(i))*E*(N+1) + sin(t(i)-phi(i))*(L(i));
 
+    [newRc(i)] = newRrcal_hypocycloid(N,R,E,Rr,t(i));
+
+    X(i) = cos(N*t(i))*E*(N+1) + cos(t(i)-phi(i))*(L(i));
+    Y(i) = -sin(N*t(i))*E*(N+1) + sin(t(i)-phi(i))*(L(i));
+
 end
 
 
