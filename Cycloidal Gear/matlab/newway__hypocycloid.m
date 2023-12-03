@@ -11,10 +11,10 @@ close all;
 
 %       !!!!!!!!!!!!!!!!!!!  (R/N) > E   !!!!!!!!!!!!!!!!!!!!!!
 
-N = 24 ;%Number of rollers
-Rr = 9 ;%Radius of the roller
-R = 150 ;%Radius of the rollers PCD (Pitch Circle Diamater)
-E =3 ;% Eccentricity - offset from input shaft to a cycloidal disk
+N = 15 ;%Number of rollers
+Rr = 18 ;%Radius of the roller
+R = 120 ;%Radius of the rollers PCD (Pitch Circle Diamater)
+E =5 ;% Eccentricity - offset from input shaft to a cycloidal disk
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -25,6 +25,8 @@ E =3 ;% Eccentricity - offset from input shaft to a cycloidal disk
 CUT = 10;%切割倍數
 tick = 20;
 SHOW = sprintf("N = %d, Rr = %d, R = %d, E = %d", N, Rr, R, E);
+file_path = 'C:\Users\JOU\Desktop\git\Special-project\Cycloidal Gear\output'; %家裡電腦
+%file_path = 'C:\Users\Johnny Jou\Documents\GitHub\Special-project\Cycloidal Gear\output';  %筆記電腦
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -70,3 +72,16 @@ yticks(-2*R:tick:2*R);
 box on;
 grid on;
 axis square;
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%生成scr
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+scrfilename = fullfile(file_path, 'Cycloidal_Drive_hypocycloid.scr');
+fid = fopen(scrfilename,'w');
+fprintf(fid,'spline ');
+fprintf(fid,'%f,%f\n', [X; Y]);
+
+fclose(fid);
