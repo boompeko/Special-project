@@ -20,11 +20,11 @@ E =5 ;% Eccentricity - offset from input shaft to a cycloidal disk
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-CUT = 10;%切割倍數
+CUT = 40;%切割倍數
 tick = 20;
 SHOW = sprintf("N = %d, Rr = %d, R = %d, E = %d", N, Rr, R, E);
-file_path = 'C:\Users\JOU\Desktop\git\Special-project\Cycloidal Gear\output'; %家裡電腦
-%file_path = 'C:\Users\Johnny Jou\Documents\GitHub\Special-project\Cycloidal Gear\output';  %筆記電腦
+%file_path = 'C:\Users\JOU\Desktop\git\Special-project\Cycloidal Gear\output'; %家裡電腦
+file_path = 'C:\Users\Johnny Jou\Documents\GitHub\Special-project\Cycloidal Gear\output';  %筆記電腦
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -74,6 +74,55 @@ yticks(-2*R:tick:2*R);
 box on;
 grid on;
 axis square;
+
+
+for i=1:1:ceil(360*CUT/(N-1))
+    
+    t(i) = i / (180*CUT) * pi ;
+    x = (E)*cos((1-N)*t(i));
+    y = (E)*sin((1-N)*t(i));
+
+    zeta = atan((Xc1(i) - x)/(Yc1(i) - y));
+    a3 = ((Xc1(i) - x)^2+(Yc1(i) - y)^2)^0.5;
+    a1 = E;
+    a2 = R;
+    
+    H(i) = 2*a1*a3*cos((1-N)*t(i));
+    
+    I(i) = 2*a1*a3*cos((1-N)*t(i)) - 2*a2*a3;
+
+    Tup(i) = ((newRc(i)+Rr)*0.02);
+    Tdo(i) = (H(i)*cos(zeta)-I(i)*sin(zeta));
+    
+    T(i) = Tup(i)/Tdo(i);
+    
+    
+    f(i) = i/CUT ;
+
+end
+
+
+g = figure('Visible', 'on');
+plot(f,T,'LineWidth',2);
+xlabel('cycloidal disk rotation angle (θ)','fontname','Times New Roman','fontsize',20');
+ylabel('Errors (θ)','fontname','Times New Roman','fontsize',20');
+title(SHOW,'誤差分析','fontname','標楷體','FontSize',16);
+xlim([0,ceil(360/(N-1))]);
+ylim([-0.5/1000,0.5/1000]);
+% xticks(0:5:(360/(N-1)));
+yticks(-0.5/1000:10:0.5/1000);
+
+box on;
+grid on;
+axis square;
+
+file_name = '誤差分析.png';
+
+
+full_file_path = fullfile(file_path, file_name);
+
+saveas(gcf, full_file_path);
+    
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %迴圈生成圖形幀並保存為GIF         %  Stationary ring gear type epicycloid reducer
@@ -276,8 +325,8 @@ axis square;
 %生成scr
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 
-scrfilename = fullfile(file_path, 'Cycloidal_Drive_epicycloid.scr');
-fid = fopen(scrfilename,'w');
-fprintf(fid,'spline ');
-fprintf(fid,'%f,%f\n', [X; Y]);
-fclose(fid);
+% scrfilename = fullfile(file_path, 'Cycloidal_Drive_epicycloid.scr');
+% fid = fopen(scrfilename,'w');
+% fprintf(fid,'spline ');
+% fprintf(fid,'%f,%f\n', [X; Y]);
+% fclose(fid);
