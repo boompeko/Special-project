@@ -37,4 +37,9 @@ Rc = ((dx)^2+(dy)^2)^1.5/(dx*d2y-dy*d2x);
 % disp(dy);
 % disp(d2x);
 % disp(d2y);
-disp(Rc);
+
+
+final_ = simplify(Rc);
+
+
+disp(final_);
