@@ -76,12 +76,12 @@ box on;
 grid on;
 axis square;
 
-file_name = '外擺線輪.png';
+% file_name = '外擺線輪.png';
 
 
-full_file_path = fullfile(file_path, file_name);
-
-saveas(gcf, full_file_path);
+% full_file_path = fullfile(file_path, file_name);
+% 
+% saveas(gcf, full_file_path);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -114,13 +114,13 @@ box on;
 grid on;
 axis square;
 
-file_name = 'radius_of_curvature_epicycloid.png';
-
-
-full_file_path = fullfile(file_path, file_name);
-
-saveas(gcf, full_file_path);
-
+% file_name = 'radius_of_curvature_epicycloid.png';
+% 
+% 
+% full_file_path = fullfile(file_path, file_name);
+% 
+% saveas(gcf, full_file_path);
+% 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %誤差分析
@@ -136,43 +136,92 @@ for i=1:1:ceil(360*CUT/(N-1))
 
     zeta = atan((Xc1(i) - x)/(Yc1(i) - y));
     a3 = ((Xc1(i) - x)^2+(Yc1(i) - y)^2)^0.5;
-    a1 = E;
-    a2 = R;
+    a4 = E;
+    a1 = R;
+    a2 = newRc(i)+Rr;
+    error = 0.01;
     
-    H(i) = 2*a1*a3*cos((1-N)*t(i));
+    H(i) = 2*a4*a3*cos((1-N)*t(i));
     
-    I(i) = 2*a1*a3*cos((1-N)*t(i)) - 2*a2*a3;
+    I(i) = 2*a4*a3*cos((1-N)*t(i)) - 2*a1*a3;
 
-    T(i) = ((newRc(i)+Rr)*0.02)/(H(i)*cos(zeta)-I(i)*sin(zeta));
+    J(i) = a1^2 + a2^2 + a3^2 + a4^2 +2*a1*a4*cos((1-N)*t(i));
 
     
+
+    E1(i) = ((-a3*cos(zeta)+a1-a4*cos((1-N)*t(i)))*2*error)/(H(i)*cos(zeta)-I(i)*sin(zeta));
+
+    E2(i) = ((a2)*2*error)/(H(i)*cos(zeta)-I(i)*sin(zeta));
+    
+    E3(i) = ((-a4*cos((1-N)*t(i)-zeta)+a3)*2*error)/(H(i)*cos(zeta)-I(i)*sin(zeta));
+
+    E4(i) = ((-a3*cos((1-N)*t(i)-zeta)+a4-a1*cos((1-N)*t(i)))*2*error)/(H(i)*cos(zeta)-I(i)*sin(zeta));
+    
+
     f(i) = i/CUT ;
 
 end
 
 
 g = figure('Visible', 'on');
-plot(f,T,'LineWidth',2,'Color','b');
+plot(f,E1,'LineWidth',2,'Color','b');
 xlabel('cycloidal disk rotation angle (θ)','fontname','Times New Roman','fontsize',18');
 ylabel('Errors (θ)','fontname','Times New Roman','fontsize',18');
 set(gca, 'Fontname', 'Times New Roman','FontSize',14);
-%title(SHOW,'誤差分析','fontname','標楷體','FontSize',16);
+title(SHOW,'Error due only to \Deltaa1 ','fontname','標楷體','FontSize',16);
 xlim([0,ceil(360/(N-1))]);
 %ylim([-0.5/1000,0.5/1000]);
 % xticks(0:5:(360/(N-1)));
 %yticks(-0.5/1000:10:0.5/1000);
 
+
+h = figure('Visible', 'on');
+plot(f,E2,'LineWidth',2,'Color','b');
+xlabel('cycloidal disk rotation angle (θ)','fontname','Times New Roman','fontsize',18');
+ylabel('Errors (θ)','fontname','Times New Roman','fontsize',18');
+set(gca, 'Fontname', 'Times New Roman','FontSize',14);
+title(SHOW,'Error due only to \Deltaa2 ','fontname','標楷體','FontSize',16);
+xlim([0,ceil(360/(N-1))]);
+%ylim([-0.5/1000,0.5/1000]);
+% xticks(0:5:(360/(N-1)));
+%yticks(-0.5/1000:10:0.5/1000);g = figure('Visible', 'on');
+
+i = figure('Visible', 'on');
+plot(f,E3,'LineWidth',2,'Color','b');
+xlabel('cycloidal disk rotation angle (θ)','fontname','Times New Roman','fontsize',18');
+ylabel('Errors (θ)','fontname','Times New Roman','fontsize',18');
+set(gca, 'Fontname', 'Times New Roman','FontSize',14);
+title(SHOW,'Error due only to \Deltaa3 ','fontname','標楷體','FontSize',16);
+xlim([0,ceil(360/(N-1))]);
+%ylim([-0.5/1000,0.5/1000]);
+% xticks(0:5:(360/(N-1)));
+%yticks(-0.5/1000:10:0.5/1000);
+
+j = figure('Visible', 'on');
+plot(f,E4,'LineWidth',2,'Color','b');
+xlabel('cycloidal disk rotation angle (θ)','fontname','Times New Roman','fontsize',18');
+ylabel('Errors (θ)','fontname','Times New Roman','fontsize',18');
+set(gca, 'Fontname', 'Times New Roman','FontSize',14);
+title(SHOW,'Error due only to \Deltaa4 ','fontname','標楷體','FontSize',16);
+xlim([0,ceil(360/(N-1))]);
+%ylim([-0.5/1000,0.5/1000]);
+% xticks(0:5:(360/(N-1)));
+%yticks(-0.5/1000:10:0.5/1000);g = figure('Visible', 'on');
+
+
+
+
 box on;
 grid on;
 axis square;
-
-file_name = '誤差分析.png';
-
-
-full_file_path = fullfile(file_path, file_name);
-
-saveas(gcf, full_file_path);
-    
+% 
+% file_name = '誤差分析.png';
+% 
+% 
+% full_file_path = fullfile(file_path, file_name);
+% 
+% saveas(gcf, full_file_path);
+%     
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %迴圈生成圖形幀並保存為GIF         %  Stationary ring gear type epicycloid reducer
