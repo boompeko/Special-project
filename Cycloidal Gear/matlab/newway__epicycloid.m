@@ -141,11 +141,11 @@ for i=1:1:ceil(360*CUT/(N-1))
     a2 = newRc(i)+Rr;
     error = 0.01;
     
-    H(i) = 2*a4*a3*cos((1-N)*t(i));
+    H(i) = -2*a4*a3*cos((1-N)*t(i));
     
-    I(i) = 2*a4*a3*cos((1-N)*t(i)) - 2*a1*a3;
+    I(i) = -2*a4*a3*cos((1-N)*t(i)) + 2*a1*a3;
 
-    J(i) = a1^2 + a2^2 + a3^2 + a4^2 +2*a1*a4*cos((1-N)*t(i));
+    J(i) = a1^2 - a2^2 + a3^2 + a4^2 +2*a1*a4*cos((1-N)*t(i));
 
     
 
@@ -164,49 +164,20 @@ end
 
 
 g = figure('Visible', 'on');
+hold on
 plot(f,E1,'LineWidth',2,'Color','b');
+plot(f,E2,'LineWidth',2,'Color','r');
+plot(f,E3,'LineWidth',2,'Color','g');
+plot(f,E4,'LineWidth',2,'Color','m');
+hold off
 xlabel('cycloidal disk rotation angle (θ)','fontname','Times New Roman','fontsize',18');
 ylabel('Errors (θ)','fontname','Times New Roman','fontsize',18');
 set(gca, 'Fontname', 'Times New Roman','FontSize',14);
-title(SHOW,'Error due only to \Deltaa1 ','fontname','標楷體','FontSize',16);
+%title(SHOW,'Error due only to \Deltaa1 ','fontname','標楷體','FontSize',16);
 xlim([0,ceil(360/(N-1))]);
 %ylim([-0.5/1000,0.5/1000]);
 % xticks(0:5:(360/(N-1)));
 %yticks(-0.5/1000:10:0.5/1000);
-
-
-h = figure('Visible', 'on');
-plot(f,E2,'LineWidth',2,'Color','b');
-xlabel('cycloidal disk rotation angle (θ)','fontname','Times New Roman','fontsize',18');
-ylabel('Errors (θ)','fontname','Times New Roman','fontsize',18');
-set(gca, 'Fontname', 'Times New Roman','FontSize',14);
-title(SHOW,'Error due only to \Deltaa2 ','fontname','標楷體','FontSize',16);
-xlim([0,ceil(360/(N-1))]);
-%ylim([-0.5/1000,0.5/1000]);
-% xticks(0:5:(360/(N-1)));
-%yticks(-0.5/1000:10:0.5/1000);g = figure('Visible', 'on');
-
-i = figure('Visible', 'on');
-plot(f,E3,'LineWidth',2,'Color','b');
-xlabel('cycloidal disk rotation angle (θ)','fontname','Times New Roman','fontsize',18');
-ylabel('Errors (θ)','fontname','Times New Roman','fontsize',18');
-set(gca, 'Fontname', 'Times New Roman','FontSize',14);
-title(SHOW,'Error due only to \Deltaa3 ','fontname','標楷體','FontSize',16);
-xlim([0,ceil(360/(N-1))]);
-%ylim([-0.5/1000,0.5/1000]);
-% xticks(0:5:(360/(N-1)));
-%yticks(-0.5/1000:10:0.5/1000);
-
-j = figure('Visible', 'on');
-plot(f,E4,'LineWidth',2,'Color','b');
-xlabel('cycloidal disk rotation angle (θ)','fontname','Times New Roman','fontsize',18');
-ylabel('Errors (θ)','fontname','Times New Roman','fontsize',18');
-set(gca, 'Fontname', 'Times New Roman','FontSize',14);
-title(SHOW,'Error due only to \Deltaa4 ','fontname','標楷體','FontSize',16);
-xlim([0,ceil(360/(N-1))]);
-%ylim([-0.5/1000,0.5/1000]);
-% xticks(0:5:(360/(N-1)));
-%yticks(-0.5/1000:10:0.5/1000);g = figure('Visible', 'on');
 
 
 
