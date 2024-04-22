@@ -10,10 +10,15 @@ close all;
 
 %       !!!!!!!!!!!!!!!!!!!  (R/N) > E   !!!!!!!!!!!!!!!!!!!!!!
 
-N = 15 ;%Number of rollers
-Rr = 18 ;%Radius of the roller
-R = 120 ;%Radius of the rollers PCD (Pitch Circle Diamater)
-E = 5 ;% Eccentricity - offset from input shaft to a cycloidal disk
+% N = 15 ;%Number of rollers
+% Rr = 18 ;%Radius of the roller
+% R = 120 ;%Radius of the rollers PCD (Pitch Circle Diamater)
+% E = 5 ;% Eccentricity - offset from input shaft to a cycloidal disk
+
+N = 9 ;%Number of rollers
+Rr = 15 ;%Radius of the roller
+R = 90 ;%Radius of the rollers PCD (Pitch Circle Diamater)
+E = 9 ;% Eccentricity - offset from input shaft to a cycloidal disk
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
