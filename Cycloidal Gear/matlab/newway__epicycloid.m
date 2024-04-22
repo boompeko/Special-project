@@ -20,7 +20,7 @@ E =5 ;% Eccentricity - offset from input shaft to a cycloidal disk
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-CUT = 20;%切割倍數
+CUT = 500;%切割倍數
 tick = 40;
 SHOW = sprintf("N = %d, Rr = %d, R = %d, E = %d", N, Rr, R, E);
 %file_path = 'C:\Users\JOU\Desktop\git\Special-project\Cycloidal Gear\output'; %家裡電腦
@@ -131,33 +131,41 @@ axis square;
 for i=1:1:ceil(360*CUT/(N-1))
     
     t(i) = i / (180*CUT) * pi ;
-    x = (E)*cos((1-N)*t(i));
-    y = (E)*sin((1-N)*t(i));
+    x(i) = (E)*cos(t(i));
+    y(i) = (E)*sin(t(i));
 
-    zeta = atan((Xc1(i) - x)/(Yc1(i) - y));
-    a3 = ((Xc1(i) - x)^2+(Yc1(i) - y)^2)^0.5;
-    a4 = E;
-    a1 = R;
-    a2 = newRc(i)+Rr;
-    error = 0.01;
-    
-    H(i) = -2*a4*a3*cos((1-N)*t(i));
-    
-    I(i) = -2*a4*a3*cos((1-N)*t(i)) + 2*a1*a3;
-
-    J(i) = a1^2 - a2^2 + a3^2 + a4^2 +2*a1*a4*cos((1-N)*t(i));
 
     
 
-    E1(i) = ((-a3*cos(zeta)+a1-a4*cos((1-N)*t(i)))*2*error)/(H(i)*cos(zeta)-I(i)*sin(zeta));
-
-    E2(i) = ((a2)*2*error)/(H(i)*cos(zeta)-I(i)*sin(zeta));
+    a3(i) = ((Xc1(i) - x(i))^2+(Yc1(i) - y(i))^2)^0.5;
+    a4(i) = E;
+    a1(i) = R;
+    a2(i) = -newRc(i)+Rr;
+    error = 0.015;
     
-    E3(i) = ((-a4*cos((1-N)*t(i)-zeta)+a3)*2*error)/(H(i)*cos(zeta)-I(i)*sin(zeta));
-
-    E4(i) = ((-a3*cos((1-N)*t(i)-zeta)+a4-a1*cos((1-N)*t(i)))*2*error)/(H(i)*cos(zeta)-I(i)*sin(zeta));
+    H(i) = -2*a4(i)*a3(i)*sin(t(i));
     
+    I(i) = -2*a4(i)*a3(i)*cos(t(i)) + 2*a1(i)*a3(i);
 
+    J(i) = a1(i)^2 - a2(i)^2 + a3(i)^2 + a4(i)^2 - 2*a1(i)*a4(i)*cos(t(i));
+
+    zeta(i) = 2*atan((H(i)-(H(i)^2+I(i)^2-J(i)^2)^0.5)/(I(i)+J(i)));
+    zeta1(i) = atan((Yc1(i) - y(i))/(Xc1(i) - x(i)));
+
+    E1(i) = ((-a3(i)*cos(zeta(i))+a1(i)-a4(i)*cos(t(i))))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
+
+    E2(i) = ((a2(i)))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
+    
+    E3(i) = ((a4(i)*cos(t(i)-zeta(i))+a3(i)-a1(i)*cos(t(i))))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
+
+    E4(i) = ((a3(i)*cos(t(i)-zeta(i))+a4(i)-a1(i)*cos(t(i)))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error)*180/pi;
+    
+    max(i) = abs(E1(i))+abs(E3(i))+abs(E2(i))+abs(E4(i));
+    rms(i) = ((E1(i))^2+(E2(i))^2+(E3(i))^2+(E4(i))^2)^0.5;
+
+    A(i) =((-a3(i)*cos(zeta(i))+a1(i)-a4(i)*cos(t(i)))*2*error);
+    B(i) = (H(i)*cos(zeta(i))-I(i)*sin(zeta(i)));
+    C(i) = A(i)/B(i);
     f(i) = i/CUT ;
 
 end
@@ -169,22 +177,31 @@ plot(f,E1,'LineWidth',2,'Color','b');
 plot(f,E2,'LineWidth',2,'Color','r');
 plot(f,E3,'LineWidth',2,'Color','g');
 plot(f,E4,'LineWidth',2,'Color','m');
+plot(f,rms,'LineWidth',2,'Color','c');
+plot(f,max,'LineWidth',2,'Color','k');
+legend("\epsilon1","\epsilon2","\epsilon3","\epsilon4","\epsilonrms","\epsilonmax")
 hold off
 xlabel('cycloidal disk rotation angle (θ)','fontname','Times New Roman','fontsize',18');
 ylabel('Errors (θ)','fontname','Times New Roman','fontsize',18');
 set(gca, 'Fontname', 'Times New Roman','FontSize',14);
-%title(SHOW,'Error due only to \Deltaa1 ','fontname','標楷體','FontSize',16);
+title('epicycloid reducer error','fontname','標楷體','FontSize',16);
 xlim([0,ceil(360/(N-1))]);
 %ylim([-0.5/1000,0.5/1000]);
 % xticks(0:5:(360/(N-1)));
 %yticks(-0.5/1000:10:0.5/1000);
+% 
+j = figure('Visible', 'on');
+hold on
+plot(f,zeta1,'LineWidth',2,'Color','b');
+plot(f,zeta,'LineWidth',2,'Color','g');
 
-
+% % 
 
 
 box on;
 grid on;
 axis square;
+
 % 
 % file_name = '誤差分析.png';
 % 
