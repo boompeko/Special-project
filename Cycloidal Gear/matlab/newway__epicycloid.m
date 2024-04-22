@@ -185,7 +185,7 @@ xlabel('cycloidal disk rotation angle (θ)','fontname','Times New Roman','fontsi
 ylabel('Errors (θ)','fontname','Times New Roman','fontsize',18');
 set(gca, 'Fontname', 'Times New Roman','FontSize',14);
 title('epicycloid reducer error','fontname','標楷體','FontSize',16);
-xlim([0,ceil(360/(N-1))]);
+xlim([0,ceil(360/(N-1))-1]);
 %ylim([-0.5/1000,0.5/1000]);
 % xticks(0:5:(360/(N-1)));
 %yticks(-0.5/1000:10:0.5/1000);

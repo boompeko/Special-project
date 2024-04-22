@@ -87,8 +87,8 @@ for i=1:1:ceil(360*CUT/(N+1))
     OM(i) = atan(Ky(i)-Kx(i));
     t(i) = i / (180*CUT) * pi - OM(i) ;
     
-    x = (E)*cos(t(i));
-    y = (E)*sin(t(i));
+    x(i) = (E)*cos(t(i));
+    y(i) = (E)*sin(t(i));
 %     
 
     
@@ -109,9 +109,9 @@ for i=1:1:ceil(360*CUT/(N+1))
 
     J(i) = a1(i)^2 - a2(i)^2 + a3(i)^2 + a4(i)^2 - 2*a1(i)*a4(i)*cos(t(i));
 
-    zeta1(i) = t(i)/N ;
-    zeta2(i) = atan((Ory - y)/(Orx - x)) ;
-    zeta(i) = 2*atan((H(i)-(H(i)^2+I(i)^2-J(i)^2)^0.5)/(I(i)+J(i)));
+    zeta1(i) = t(i)/N -OM(i) ;
+    zeta(i) = atan((Ory(i) - y(i))/(Orx(i) - x(i))) - OM(i) ;
+    zeta2(i) = 2*atan((H(i)-(H(i)^2+I(i)^2-J(i)^2)^0.5)/(I(i)+J(i))) -OM(i);
 
 
     E1(i) = ((-a3(i)*cos(zeta(i))+a1(i)-a4(i)*cos(t(i))))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
@@ -144,11 +144,15 @@ xlabel('cycloidal disk rotation angle (θ)','fontname','Times New Roman','fontsi
 ylabel('Errors (θ)','fontname','Times New Roman','fontsize',18');
 set(gca, 'Fontname', 'Times New Roman','FontSize',14);
 title('hypocycloid reducer error','fontname','標楷體','FontSize',16);
-xlim([0,ceil(360/(N+1))]);
+xlim([0,ceil(360/(N+1))-1]);
 %ylim([-0.5/1000,0.5/1000]);
 % xticks(0:5:(360/(N-1)));
 %yticks(-0.5/1000:10:0.5/1000);
 
+box on;
+grid on;
+axis square;
+% 
 
 j = figure('Visible', 'on');
 hold on
