@@ -20,7 +20,7 @@ E =5 ;% Eccentricity - offset from input shaft to a cycloidal disk
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-CUT = 10;%切割倍數
+CUT = 1;%切割倍數
 tick = 40;
 SHOW = sprintf("N = %d, Rr = %d, R = %d, E = %d", N, Rr, R, E);
 %file_path = 'C:\Users\JOU\Desktop\git\Special-project\Cycloidal Gear\output'; %家裡電腦
@@ -31,9 +31,9 @@ file_path = 'C:\Users\Johnny Jou\Documents\GitHub\Special-project\Cycloidal Gear
 %計算曲率中心和接觸點
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-for i = 1 : 1 : ((360*CUT)+1)
+for i = 1 : 1 : ((360*CUT*(N-1))+14)
 
-    phi(i) = i / (180*CUT) * pi;  % phi = phi3
+    phi(i) = i / (180*CUT*(N-1)) * pi;  % phi = phi3
 
     psi(i) = atan(sin((1-N)*phi(i))/((R/(E*N))-cos((1-N)*phi(i))));
    
@@ -89,11 +89,11 @@ axis square;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 z(1) = 0;
-bRc(1) = newRc(360*CUT);
+bRc(1) = newRc(360*CUT*(N-1));
 
-for i = 1 : 1 : ceil(360*CUT/(N-1))
+for i = 1 : 1 : ceil(360*CUT)
 
-    z(i+1) = i/CUT ;
+    z(i+1) = i/CUT/(N-1) ;
     bRc(i+1) = newRc(i);
 
 end
@@ -126,27 +126,27 @@ axis square;
 %誤差分析
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
+count = 0;
 
 
 for i=1:1:(360*CUT+1)
     
-    phi2(i) =  i / (180*CUT) * pi * (1-N)  ;
-
-
+    phi2(i) =  -i / (180*CUT) * pi   ;
     
+    test(i) = phi2(i)/phi(i);
     
-    x(i) = (E)*cos(phi2(i));
-    y(i) = (E)*sin(phi2(i));
+    Ocx(i) = (E)*cos(phi2(i));
+    Ocy(i) = (E)*sin(phi2(i));
 
 
     a1(i) = R;
     a2(i) = -newRc(i)+Rr;
-    a3(i) = ((Kx(i) - x(i))^2+(Ky(i) - y(i))^2)^0.5;
+    a3(i) = ((Kx(i) - Ocx(i))^2+(Ky(i) - Ocy(i))^2)^0.5;
     a4(i) = E;
     
     
     error = 0.015;
+    input_error = 0.1;
     
     H(i) = -2*a3(i)*a4(i)*sin(phi2(i));
     
@@ -155,23 +155,22 @@ for i=1:1:(360*CUT+1)
     J(i) = a1(i)^2 - a2(i)^2 + a3(i)^2 + a4(i)^2 - 2*a1(i)*a4(i)*cos(phi2(i));
 
     zeta1(i) = 2*atan((H(i)-(H(i)^2+I(i)^2-J(i)^2)^0.5)/(I(i)+J(i)));
-    zeta(i) = atan((Ky(i) - y(i))/(Kx(i) - x(i)));
+    zeta(i) = atan((Ky(i) - Ocy(i))/(Kx(i) - Ocx(i)));
 
     E1(i) = ((-a3(i)*cos(zeta(i))+a1(i)-a4(i)*cos(phi2(i))))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
 
-    E2(i) = ((a2(i)))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
+    E2(i) = ((-a2(i)))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
     
-    E3(i) = ((a4(i)*cos(phi2(i)-zeta(i))+a3(i)-a1(i)*cos(phi2(i))))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
+    E3(i) = (a4(i)*cos(phi2(i)-zeta(i))+a3(i)-a1(i)*cos(zeta(i)))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
 
-    E4(i) = ((a3(i)*cos(phi2(i)-zeta(i))+a4(i)-a1(i)*cos(phi2(i)))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error)*180/pi;
+    E4(i) = (a3(i)*cos(phi2(i)-zeta(i))+a3(i))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
     
-    max(i) = abs(E1(i))+abs(E3(i))+abs(E2(i))+abs(E4(i));
+    Ephi(i) = (a3(i)*a4(i)*sin(zeta(i)-phi2(i))+a1(i)*a4(i)*sin(phi2(i)))/ (H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
+
+    max(i) = abs(E1(i))+abs(E2(i))+abs(E3(i))+abs(E4(i));
     rms(i) = ((E1(i))^2+(E2(i))^2+(E3(i))^2+(E4(i))^2)^0.5;
 
-    A(i) =((-a3(i)*cos(zeta(i))+a1(i)-a4(i)*cos(phi(i)))*2*error);
-    B(i) = (H(i)*cos(zeta(i))-I(i)*sin(zeta(i)));
-    C(i) = A(i)/B(i);
-    
+
     f(i) = i/CUT ;
 
 end
@@ -191,16 +190,54 @@ xlabel('cycloidal disk rotation angle (θ)','fontname','Times New Roman','fontsi
 ylabel('Errors (θ)','fontname','Times New Roman','fontsize',18');
 set(gca, 'Fontname', 'Times New Roman','FontSize',14);
 title('epicycloid reducer error','fontname','標楷體','FontSize',16);
-xlim([0,ceil(360/(N-1))-1]);
-%ylim([-0.5/1000,0.5/1000]);
-% xticks(0:5:(360/(N-1)));
-%yticks(-0.5/1000:10:0.5/1000);
-% 
+xlim([0,360]);
+ylim([-0.1,0.1]);
+
+E1_f = figure('Visible', 'on');
+hold on
+plot(f,E1,'LineWidth',2,'Color','b');
+title('\epsilon1','fontname','標楷體','FontSize',16);
+xlim([0,360]);
+ylim([-1,1]);
+hold off
+
+E2_f = figure('Visible', 'on');
+hold on
+plot(f,E2,'LineWidth',2,'Color','b');
+title('\epsilon2','fontname','標楷體','FontSize',16);
+xlim([0,360]);
+ylim([-1,1]);
+hold off
+
+E3_f = figure('Visible', 'on');
+hold on
+plot(f,E3,'LineWidth',2,'Color','b');
+title('\epsilon3','fontname','標楷體','FontSize',16);
+xlim([0,360]);
+ylim([-1,1]);
+hold off
+
+E4_f = figure('Visible', 'on');
+hold on
+plot(f,E4,'LineWidth',2,'Color','b');
+title('\epsilon4','fontname','標楷體','FontSize',16);
+xlim([0,360]);
+ylim([-1,1]);
+hold off
+
+Ephi_f = figure('Visible', 'on');
+hold on
+plot(f,Ephi,'LineWidth',2,'Color','b');
+title('\epsiloninput','fontname','標楷體','FontSize',16);
+xlim([0,360]);
+ylim([-1,1]);
+hold off
+
 j = figure('Visible', 'on');
 hold on
-plot(f,zeta1,'LineWidth',2,'Color','b');
+%plot(f,zeta1,'LineWidth',2,'Color','b');
 plot(f,zeta,'LineWidth',2,'Color','g');
-
+xlim([0,360]);
 % % 
 
 
