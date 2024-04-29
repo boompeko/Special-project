@@ -33,25 +33,25 @@ file_path = 'C:\Users\JOU\Desktop\git\Special-project\Cycloidal Gear\output'; %�
 %計算曲率中心和接觸點
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-for i = 1 : 1 : ((360*CUT)+1)
+for i = 1 : 1 : ((360*CUT*N)+1)
 
-    t(i) = i / (180*CUT) * pi;
+    phi(i) = i / (180*CUT) * pi;
 
-    phi(i) = atan(-sin((1+N)*t(i))/((R/(E*N))-cos((1+N)*t(i))));
+    psi(i) = atan(-sin((1+N)*phi(i))/((R/(E*N))-cos((1+N)*phi(i))));
    
     
-    L(i) = (R^2+(E*N)^2-2*R*(E*N)*cos((1+N)*t(i)))^0.5 + Rr;
+    L(i) = (R^2+(E*N)^2-2*R*(E*N)*cos((1+N)*phi(i)))^0.5 + Rr;
 
-    [newRc(i)] = newRrcal_hypocycloid(N,R,E,Rr,t(i));
+    [newRc(i)] = newRrcal_hypocycloid(N,R,E,Rr,phi(i)); %曲率半徑
 
-    X(i) = cos(N*t(i))*E*(N+1) + cos(t(i)-phi(i))*(L(i));
-    Y(i) = -sin(N*t(i))*E*(N+1) + sin(t(i)-phi(i))*(L(i));
+    X(i) = cos(N*phi(i))*E*(N+1) + cos(phi(i)-psi(i))*(L(i)); %接觸點C
+    Y(i) = -sin(N*phi(i))*E*(N+1) + sin(phi(i)-psi(i))*(L(i));
 
-    Kx(i)= cos(N*t(i))*E*(N+1) + cos(t(i)-phi(i))*(L(i)+newRc(i));
-    Ky(i)= -sin(N*t(i))*E*(N+1) + sin(t(i)-phi(i))*(L(i)+newRc(i));
+    Kx(i)= cos(N*phi(i))*E*(N+1) + cos(phi(i)-psi(i))*(L(i)+newRc(i)); % 點K
+    Ky(i)= -sin(N*phi(i))*E*(N+1) + sin(phi(i)-psi(i))*(L(i)+newRc(i));
 
-    Orx(i) = cos(N*t(i))*E*(N+1) + cos(t(i)-phi(i))*(L(i)-Rr);
-    Ory(i) = -sin(N*t(i))*E*(N+1) + sin(t(i)-phi(i))*(L(i)-Rr);
+    Orx(i) = cos(N*phi(i))*E*(N+1) + cos(phi(i)-psi(i))*(L(i)-Rr);  % 點Or
+    Ory(i) = -sin(N*phi(i))*E*(N+1) + sin(phi(i)-psi(i))*(L(i)-Rr);
 
 end
 
@@ -85,42 +85,37 @@ axis square;
 for i=1:1:ceil(360*CUT/(N+1))
     
     OM(i) = atan(Ky(i)-Kx(i));
-    t(i) = i / (180*CUT) * pi - OM(i) ;
     
-    x(i) = (E)*cos(t(i));
-    y(i) = (E)*sin(t(i));
-%     
-
+    phi(i) = i / (180*CUT) * pi - OM(i) ;
     
     
-    A(i) = t(i)-OM(i);
-
-    a1(i) = (Kx(i))^2 + (Ky(i))^2;
-    a2(i) = newRc(i)+Rr;
-    a3(i) = R;
-    a4(i) = E;
+    b1(i) = (Kx(i))^2 + (Ky(i))^2;
+    b2(i) = newRc(i)+Rr;
+    b3(i) = R;
+    b4(i) = E;
   
     
     error = 0.015;
     
-    H(i) = -2*a4(i)*a3(i)*sin(t(i));
+    H(i) = -2*b3(i)*b4(i)*sin(phi(i));
     
-    I(i) = -2*a4(i)*a3(i)*cos(t(i)) + 2*a1(i)*a3(i);
+    I(i) = -2*b3(i)*b4(i)*cos(phi(i)) + 2*b1(i)*b3(i);
 
-    J(i) = a1(i)^2 - a2(i)^2 + a3(i)^2 + a4(i)^2 - 2*a1(i)*a4(i)*cos(t(i));
-
-    zeta1(i) = t(i)/N -OM(i) ;
+    J(i) = b1(i)^2 - b2(i)^2 + b3(i)^2 + b4(i)^2 - 2*b1(i)*b4(i)*cos(phi(i));
+    
     zeta(i) = atan((Ory(i) - y(i))/(Orx(i) - x(i))) - OM(i) ;
-    zeta2(i) = 2*atan((H(i)-(H(i)^2+I(i)^2-J(i)^2)^0.5)/(I(i)+J(i))) -OM(i);
-
-
-    E1(i) = ((-a3(i)*cos(zeta(i))+a1(i)-a4(i)*cos(t(i))))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
-
-    E2(i) = ((a2(i)))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
     
-    E3(i) = ((a4(i)*cos(t(i)-zeta(i))+a3(i)-a1(i)*cos(t(i))))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
+%     zeta1(i) = t(i)/N -OM(i) ;
+%     zeta2(i) = 2*atan((H(i)-(H(i)^2+I(i)^2-J(i)^2)^0.5)/(I(i)+J(i))) -OM(i);
 
-    E4(i) = ((a3(i)*cos(t(i)-zeta(i))+a4(i)-a1(i)*cos(t(i)))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error)*180/pi;
+
+    E1(i) = ((-b3(i)*cos(zeta(i))+b1(i)-b4(i)*cos(phi(i))))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
+
+    E2(i) = ((b2(i)))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
+    
+    E3(i) = ((b4(i)*cos(phi(i)-zeta(i))+b3(i)-b1(i)*cos(phi(i))))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
+
+    E4(i) = ((b3(i)*cos(phi(i)-zeta(i))+b4(i)-b1(i)*cos(phi(i)))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error)*180/pi;
     
     max(i) = abs(E1(i))+abs(E3(i))+abs(E2(i))+abs(E4(i));
     rms(i) = ((E1(i))^2+(E2(i))^2+(E3(i))^2+(E4(i))^2)^0.5;
@@ -154,22 +149,17 @@ grid on;
 axis square;
 % 
 
-j = figure('Visible', 'on');
-hold on
-plot(f,zeta1,'LineWidth',2,'Color','b');
-plot(f,zeta,'LineWidth',2,'Color','g');
-plot(f,zeta2,'LineWidth',2,'Color','k');
-% % 
-
-
-% plot(f,E3,'LineWidth',2,'Color','g');
-% plot(f,E4,'LineWidth',2,'Color','m');
-hold off
+% j = figure('Visible', 'on');
+% hold on
+% plot(f,zeta1,'LineWidth',2,'Color','b');
+% plot(f,zeta,'LineWidth',2,'Color','g');
+% plot(f,zeta2,'LineWidth',2,'Color','k');
+% hold off
 
 box on;
 grid on;
 axis square;
-% 
+
 % file_name = '誤差分析.png';
 % 
 % 

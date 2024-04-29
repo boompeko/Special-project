@@ -33,23 +33,23 @@ file_path = 'C:\Users\Johnny Jou\Documents\GitHub\Special-project\Cycloidal Gear
 
 for i = 1 : 1 : ((360*CUT)+1)
 
-    t(i) = i / (180*CUT) * pi;
+    phi(i) = i / (180*CUT) * pi;  % phi = phi3
 
-    phi(i) = atan(sin((1-N)*t(i))/((R/(E*N))-cos((1-N)*t(i))));
+    psi(i) = atan(sin((1-N)*phi(i))/((R/(E*N))-cos((1-N)*phi(i))));
    
     
-    L(i) = (R^2+(E*N)^2-2*R*(E*N)*cos((1-N)*t(i)))^0.5 - Rr;
+    L(i) = (R^2+(E*N)^2-2*R*(E*N)*cos((1-N)*phi(i)))^0.5 - Rr;
 
-    X(i) = cos(N*t(i))*E*(N-1) + cos(t(i)+phi(i))*(L(i));
-    Y(i) = -sin(N*t(i))*E*(N-1) - sin(t(i)+phi(i))*(L(i));
+    X(i) = cos(N*phi(i))*E*(N-1) + cos(phi(i)+psi(i))*(L(i)); %輪廓
+    Y(i) = -sin(N*phi(i))*E*(N-1) - sin(phi(i)+psi(i))*(L(i));
 
-    [newRc(i)] = newRrcal_epicycloid(N,R,E,Rr,t(i));
+    [newRc(i)] = newRrcal_epicycloid(N,R,E,Rr,phi(i));
 
-    Xc1(i) = R-(Rr-newRc(i))*cos(phi(i));
-    Yc1(i) = (Rr-newRc(i))*sin(phi(i));
+    Kx(i) = R-(Rr-newRc(i))*cos(psi(i));  %曲率中心
+    Ky(i) = (Rr-newRc(i))*sin(psi(i));
 
-    Xc2(i) = (R)*cos((N-1)*t(i))-(Rr+newRc(i))*cos(phi(i)+(N-1)*t(i));
-    Yc2(i) = (R)*sin((N-1)*t(i))-(Rr+newRc(i))*sin(phi(i)+(N-1)*t(i));
+%     Xc2(i) = (R)*cos((N-1)*t(i))-(Rr+newRc(i))*cos(phi(i)+(N-1)*t(i));
+%     Yc2(i) = (R)*sin((N-1)*t(i))-(Rr+newRc(i))*sin(phi(i)+(N-1)*t(i));
 
 
 end
@@ -128,44 +128,50 @@ axis square;
 
 
 
-for i=1:1:ceil(360*CUT/(N-1))
+
+for i=1:1:(360*CUT+1)
     
-    t(i) = i / (180*CUT) * pi ;
-    x(i) = (E)*cos(t(i));
-    y(i) = (E)*sin(t(i));
+    phi2(i) =  i / (180*CUT) * pi * (1-N)  ;
 
 
     
+    
+    x(i) = (E)*cos(phi2(i));
+    y(i) = (E)*sin(phi2(i));
 
-    a3(i) = ((Xc1(i) - x(i))^2+(Yc1(i) - y(i))^2)^0.5;
-    a4(i) = E;
+
     a1(i) = R;
     a2(i) = -newRc(i)+Rr;
+    a3(i) = ((Kx(i) - x(i))^2+(Ky(i) - y(i))^2)^0.5;
+    a4(i) = E;
+    
+    
     error = 0.015;
     
-    H(i) = -2*a4(i)*a3(i)*sin(t(i));
+    H(i) = -2*a3(i)*a4(i)*sin(phi2(i));
     
-    I(i) = -2*a4(i)*a3(i)*cos(t(i)) + 2*a1(i)*a3(i);
+    I(i) = -2*a3(i)*a4(i)*cos(phi2(i)) + 2*a1(i)*a3(i);
 
-    J(i) = a1(i)^2 - a2(i)^2 + a3(i)^2 + a4(i)^2 - 2*a1(i)*a4(i)*cos(t(i));
+    J(i) = a1(i)^2 - a2(i)^2 + a3(i)^2 + a4(i)^2 - 2*a1(i)*a4(i)*cos(phi2(i));
 
-    zeta(i) = 2*atan((H(i)-(H(i)^2+I(i)^2-J(i)^2)^0.5)/(I(i)+J(i)));
-    zeta1(i) = atan((Yc1(i) - y(i))/(Xc1(i) - x(i)));
+    zeta1(i) = 2*atan((H(i)-(H(i)^2+I(i)^2-J(i)^2)^0.5)/(I(i)+J(i)));
+    zeta(i) = atan((Ky(i) - y(i))/(Kx(i) - x(i)));
 
-    E1(i) = ((-a3(i)*cos(zeta(i))+a1(i)-a4(i)*cos(t(i))))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
+    E1(i) = ((-a3(i)*cos(zeta(i))+a1(i)-a4(i)*cos(phi2(i))))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
 
     E2(i) = ((a2(i)))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
     
-    E3(i) = ((a4(i)*cos(t(i)-zeta(i))+a3(i)-a1(i)*cos(t(i))))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
+    E3(i) = ((a4(i)*cos(phi2(i)-zeta(i))+a3(i)-a1(i)*cos(phi2(i))))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
 
-    E4(i) = ((a3(i)*cos(t(i)-zeta(i))+a4(i)-a1(i)*cos(t(i)))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error)*180/pi;
+    E4(i) = ((a3(i)*cos(phi2(i)-zeta(i))+a4(i)-a1(i)*cos(phi2(i)))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error)*180/pi;
     
     max(i) = abs(E1(i))+abs(E3(i))+abs(E2(i))+abs(E4(i));
     rms(i) = ((E1(i))^2+(E2(i))^2+(E3(i))^2+(E4(i))^2)^0.5;
 
-    A(i) =((-a3(i)*cos(zeta(i))+a1(i)-a4(i)*cos(t(i)))*2*error);
+    A(i) =((-a3(i)*cos(zeta(i))+a1(i)-a4(i)*cos(phi(i)))*2*error);
     B(i) = (H(i)*cos(zeta(i))-I(i)*sin(zeta(i)));
     C(i) = A(i)/B(i);
+    
     f(i) = i/CUT ;
 
 end
