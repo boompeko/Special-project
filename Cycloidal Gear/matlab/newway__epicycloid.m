@@ -23,8 +23,8 @@ E =5 ;% Eccentricity - offset from input shaft to a cycloidal disk
 CUT = 1;%切割倍數
 tick = 40;
 SHOW = sprintf("N = %d, Rr = %d, R = %d, E = %d", N, Rr, R, E);
-%file_path = 'C:\Users\JOU\Desktop\git\Special-project\Cycloidal Gear\output'; %家裡電腦
-file_path = 'C:\Users\Johnny Jou\Documents\GitHub\Special-project\Cycloidal Gear\output';  %筆記電腦
+file_path = 'C:\Users\JOU\Desktop\git\Special-project\Cycloidal Gear\output'; %家裡電腦
+%file_path = 'C:\Users\Johnny Jou\Documents\GitHub\Special-project\Cycloidal Gear\output';  %筆記電腦
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -43,10 +43,11 @@ for i = 1 : 1 : ((360*CUT*(N-1))+14)
     X(i) = cos(N*phi(i))*E*(N-1) + cos(phi(i)+psi(i))*(L(i)); %輪廓
     Y(i) = -sin(N*phi(i))*E*(N-1) - sin(phi(i)+psi(i))*(L(i));
 
-    [newRc(i)] = newRrcal_epicycloid(N,R,E,Rr,phi(i));
+    [newRc(i)] = newRrcal_epicycloid(N,R,E,Rr,phi(i));  %曲率半徑
 
     Kx(i) = R-(Rr-newRc(i))*cos(psi(i));  %曲率中心
     Ky(i) = (Rr-newRc(i))*sin(psi(i));
+    k_test(i) = Rr-newRc(i);
 
 %     Xc2(i) = (R)*cos((N-1)*t(i))-(Rr+newRc(i))*cos(phi(i)+(N-1)*t(i));
 %     Yc2(i) = (R)*sin((N-1)*t(i))-(Rr+newRc(i))*sin(phi(i)+(N-1)*t(i));
@@ -126,16 +127,16 @@ axis square;
 %誤差分析
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-count = 0;
+
 
 
 for i=1:1:(360*CUT+1)
     
-    phi2(i) =  -i / (180*CUT) * pi   ;
+    phi2(i) =  -i / (180*CUT) * pi   ; % 輸入角phi2
     
-    test(i) = phi2(i)/phi(i);
+ 
     
-    Ocx(i) = (E)*cos(phi2(i));
+    Ocx(i) = (E)*cos(phi2(i)); %點Oc
     Ocy(i) = (E)*sin(phi2(i));
 
 
@@ -145,8 +146,8 @@ for i=1:1:(360*CUT+1)
     a4(i) = E;
     
     
-    error = 0.015;
-    input_error = 0.1;
+    error = 0.015; %長度誤差
+    input_error = 0.1; %角度誤差
     
     H(i) = -2*a3(i)*a4(i)*sin(phi2(i));
     
@@ -154,21 +155,21 @@ for i=1:1:(360*CUT+1)
 
     J(i) = a1(i)^2 - a2(i)^2 + a3(i)^2 + a4(i)^2 - 2*a1(i)*a4(i)*cos(phi2(i));
 
-    zeta1(i) = 2*atan((H(i)-(H(i)^2+I(i)^2-J(i)^2)^0.5)/(I(i)+J(i)));
-    zeta(i) = atan((Ky(i) - Ocy(i))/(Kx(i) - Ocx(i)));
+    theta(i) = 2*atan((H(i)-(H(i)^2+I(i)^2-J(i)^2)^0.5)/(I(i)+J(i))); % 輸出角 依據講義直接由HIJ 推
+    theta1(i) = atan((Ky(i) - Ocy(i))/(Kx(i) - Ocx(i))); % 輸出角 依照點與點之間位置算
 
-    E1(i) = ((-a3(i)*cos(zeta(i))+a1(i)-a4(i)*cos(phi2(i))))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
+    E1(i) = ((-a3(i)*cos(theta(i))+a1(i)-a4(i)*cos(phi2(i))))/(H(i)*cos(theta(i))-I(i)*sin(theta(i)))*2*error*180/pi;
 
-    E2(i) = ((-a2(i)))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
+    E2(i) = ((-a2(i)))/(H(i)*cos(theta(i))-I(i)*sin(theta(i)))*2*error*180/pi;
     
-    E3(i) = (a4(i)*cos(phi2(i)-zeta(i))+a3(i)-a1(i)*cos(zeta(i)))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
+    E3(i) = (a4(i)*cos(phi2(i)-theta(i))+a3(i)-a1(i)*cos(theta(i)))/(H(i)*cos(theta(i))-I(i)*sin(theta(i)))*2*error*180/pi;
 
-    E4(i) = (a3(i)*cos(phi2(i)-zeta(i))+a3(i))/(H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
+    E4(i) = (a3(i)*cos(phi2(i)-theta(i))+a4(i)-a1(i)*cos(phi2(i)))/(H(i)*cos(theta(i))-I(i)*sin(theta(i)))*2*error*180/pi;
     
-    Ephi(i) = (a3(i)*a4(i)*sin(zeta(i)-phi2(i))+a1(i)*a4(i)*sin(phi2(i)))/ (H(i)*cos(zeta(i))-I(i)*sin(zeta(i)))*2*error*180/pi;
+    Ephi(i) = (a3(i)*a4(i)*sin(theta(i)-phi2(i))+a1(i)*a4(i)*sin(phi2(i)))/ (H(i)*cos(theta(i))-I(i)*sin(theta(i)))*2*error*180/pi;
 
     max(i) = abs(E1(i))+abs(E2(i))+abs(E3(i))+abs(E4(i));
-    rms(i) = ((E1(i))^2+(E2(i))^2+(E3(i))^2+(E4(i))^2)^0.5;
+    rss(i) = ((E1(i))^2+(E2(i))^2+(E3(i))^2+(E4(i))^2)^0.5;
 
 
     f(i) = i/CUT ;
@@ -182,7 +183,7 @@ plot(f,E1,'LineWidth',2,'Color','b');
 plot(f,E2,'LineWidth',2,'Color','r');
 plot(f,E3,'LineWidth',2,'Color','g');
 plot(f,E4,'LineWidth',2,'Color','m');
-plot(f,rms,'LineWidth',2,'Color','c');
+plot(f,rss,'LineWidth',2,'Color','c');
 plot(f,max,'LineWidth',2,'Color','k');
 legend("\epsilon1","\epsilon2","\epsilon3","\epsilon4","\epsilonrms","\epsilonmax")
 hold off
@@ -235,11 +236,16 @@ hold off
 
 j = figure('Visible', 'on');
 hold on
-%plot(f,zeta1,'LineWidth',2,'Color','b');
-plot(f,zeta,'LineWidth',2,'Color','g');
+plot(f,theta1,'LineWidth',2,'Color','b');
+plot(f,theta,'LineWidth',2,'Color','g');
 xlim([0,360]);
 % % 
 
+
+k = figure('Visible', 'on');
+hold on
+plot(Kx,Ky,'LineWidth',2,'Color','b');
+xlim([0,360]);
 
 box on;
 grid on;
@@ -455,8 +461,8 @@ axis square;
 %生成scr
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 
-% scrfilename = fullfile(file_path, 'Cycloidal_Drive_epicycloid.scr');
-% fid = fopen(scrfilename,'w');
-% fprintf(fid,'spline ');
-% fprintf(fid,'%f,%f\n', [X; Y]);
-% fclose(fid);
+scrfilename = fullfile(file_path, 'Cycloidal_Drive_epicycloid.scr');
+fid = fopen(scrfilename,'w');
+fprintf(fid,'spline ');
+fprintf(fid,'%f,%f\n', [X; Y]);
+fclose(fid);
