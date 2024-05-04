@@ -92,8 +92,8 @@ for i=1:1:360*CUT+1
     Ocx(i) = (E)*cos(phi(i)); %點Oc
     Ocy(i) = (E)*sin(phi(i));
 
-    b1(i) = Kx(i)^2 + Ky(i)^2;
-    b2(i) = -newRc(i)+Rr;
+    b1(i) = (Kx(i)^2 + Ky(i)^2)^0.5;
+    b2(i) = newRc(i)+Rr;
     b3(i) = R;
     b4(i) = E;
   
@@ -106,8 +106,8 @@ for i=1:1:360*CUT+1
 
     J(i) = b1(i)^2 - b2(i)^2 + b3(i)^2 + b4(i)^2 - 2*b1(i)*b4(i)*cos(phi2(i));
 
-    theta1(i) = 2*atan((H(i)-(H(i)^2+I(i)^2-J(i)^2)^0.5)/(I(i)+J(i))); % 輸出角 依據講義直接由HIJ 推
-    theta(i) = atan((Ky(i) - Ocy(i))/(Kx(i) - Ocx(i)))-OM(i); % 輸出角 依照點與點之間位置算
+    theta(i) = 2*atan((H(i)-(H(i)^2+I(i)^2-J(i)^2)^0.5)/(I(i)+J(i))); % 輸出角 依據講義直接由HIJ 推
+    %theta(i) = atan((Ky(i) - Ocy(i))/(Kx(i) - Ocx(i)))-OM(i); % 輸出角 依照點與點之間位置算
     
 
     E1(i) = ((-b3(i)*cos(theta(i))+b1(i)-b4(i)*cos(phi2(i))))/(H(i)*cos(theta(i))-I(i)*sin(theta(i)))*2*error*180/pi;
