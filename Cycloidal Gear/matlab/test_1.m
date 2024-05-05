@@ -19,3 +19,4 @@ H = expand(H);
 G
 H
 
+(atan2(-3,-3)*180/pi)

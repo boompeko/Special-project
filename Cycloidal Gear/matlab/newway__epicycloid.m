@@ -63,10 +63,11 @@ end
 
 a = figure('Visible', 'on');
 plot(X,Y,'LineWidth',2,'Color','b');
-xlabel('X','fontname','Times New Roman','fontsize',18');
-ylabel('Y','fontname','Times New Roman','fontsize',18');
+xlabel('X (mm)','fontname','Times New Roman','fontsize',18');
+ylabel('Y (mm)','fontname','Times New Roman','fontsize',18');
 set(gca, 'Fontname', 'Times New Roman','FontSize',14);
 %title('擺線輪輪廓',SHOW);
+title('擺線輪輪廓','fontsize',20');
 axis equal;
 xlim([-(R),(R)]);
 ylim([-(R),(R)]);
@@ -94,7 +95,7 @@ bRc(1) = newRc(360*CUT*(N-1));
 
 for i = 1 : 1 : ceil(360*CUT)
 
-    z(i+1) = i/CUT/(N-1) ;
+    z(i+1) = i/CUT;
     bRc(i+1) = newRc(i);
 
 end
@@ -102,14 +103,19 @@ end
 
 b = figure('Visible', 'on');
 plot(z,bRc,'LineWidth',2, 'Color','b');
-xlabel('cycloidal disk rotation angle (θ)','fontname','Times New Roman','fontsize',18');
+xlabel('input angle (deg)','fontname','Times New Roman','fontsize',18');
 ylabel('radius of curvature (mm)','fontname','Times New Roman','fontsize',18');
 set(gca, 'Fontname', 'Times New Roman','FontSize',14);
-%title(SHOW,'曲率半徑','FontSize',16);
-xlim([0,ceil(360/(N-1))]);
+title('曲率半徑','FontSize',16);
+xlim([0,360]);
 ylim([-R,R]);
-xticks(0:5:(360/(N-1)));
+xticks(0:60:(360));
 yticks(-R:tick:R);
+
+box on;
+grid on;
+axis square;
+
 
 box on;
 grid on;
@@ -147,16 +153,17 @@ for i=1:1:(360*CUT+1)
     
     
     error = 0.015; %長度誤差
-    input_error = 0.1; %角度誤差
-    
+    input_error = 0.1*pi/180; %角度誤差
+  
     H(i) = -2*a3(i)*a4(i)*sin(phi2(i));
     
     I(i) = -2*a3(i)*a4(i)*cos(phi2(i)) + 2*a1(i)*a3(i);
 
     J(i) = a1(i)^2 - a2(i)^2 + a3(i)^2 + a4(i)^2 - 2*a1(i)*a4(i)*cos(phi2(i));
 
-    theta(i) = 2*atan((H(i)-(H(i)^2+I(i)^2-J(i)^2)^0.5)/(I(i)+J(i))); % 輸出角 依據講義直接由HIJ 推
-    theta1(i) = atan((Ky(i) - Ocy(i))/(Kx(i) - Ocx(i))); % 輸出角 依照點與點之間位置算
+    theta1(i) = 2*atan((H(i)-(H(i)^2+I(i)^2-J(i)^2)^0.5)/(I(i)+J(i))); % 輸出角 依據講義直接由HIJ 推
+    theta(i) = atan2((Ky(i) - Ocy(i)),(Kx(i) - Ocx(i))); % 輸出角 依照點與點之間位置算
+    theta2(i) = 2*atan((H(i)+(H(i)^2+I(i)^2-J(i)^2)^0.5)/(I(i)+J(i)));
 
     E1(i) = ((-a3(i)*cos(theta(i))+a1(i)-a4(i)*cos(phi2(i))))/(H(i)*cos(theta(i))-I(i)*sin(theta(i)))*2*error*180/pi;
 
@@ -166,7 +173,8 @@ for i=1:1:(360*CUT+1)
 
     E4(i) = (a3(i)*cos(phi2(i)-theta(i))+a4(i)-a1(i)*cos(phi2(i)))/(H(i)*cos(theta(i))-I(i)*sin(theta(i)))*2*error*180/pi;
     
-    Ephi(i) = (a3(i)*a4(i)*sin(theta(i)-phi2(i))+a1(i)*a4(i)*sin(phi2(i)))/ (H(i)*cos(theta(i))-I(i)*sin(theta(i)))*2*error*180/pi;
+    %Ephi(i) = (a3(i)*a4(i)*cos(phi2(i))*sin(theta(i))-a3(i)*a4(i)*sin(phi2(i))*cos(theta(i))+a1(i)*a4(i)*sin(phi2(i)))/ (H(i)*cos(theta(i))-I(i)*sin(theta(i)))*2*input_error*180/pi;
+    Ephi(i) = (a3(i)*a4(i)*sin(theta(i)-phi2(i))+a1(i)*a4(i)*sin(phi2(i)))/ (H(i)*cos(theta(i))-I(i)*sin(theta(i)))*2*input_error*180/pi;
 
     max(i) = abs(E1(i))+abs(E2(i))+abs(E3(i))+abs(E4(i));
     rss(i) = ((E1(i))^2+(E2(i))^2+(E3(i))^2+(E4(i))^2)^0.5;
@@ -183,66 +191,102 @@ plot(f,E1,'LineWidth',2,'Color','b');
 plot(f,E2,'LineWidth',2,'Color','r');
 plot(f,E3,'LineWidth',2,'Color','g');
 plot(f,E4,'LineWidth',2,'Color','m');
+plot(f,Ephi,'LineWidth',2,'Color','y');
 plot(f,rss,'LineWidth',2,'Color','c');
 plot(f,max,'LineWidth',2,'Color','k');
-legend("\epsilon1","\epsilon2","\epsilon3","\epsilon4","\epsilonrms","\epsilonmax")
+legend("\epsilon1","\epsilon2","\epsilon3","\epsilon4","\epsilon\phi2","\epsilonrms","\epsilonmax")
 hold off
-xlabel('cycloidal disk rotation angle (θ)','fontname','Times New Roman','fontsize',18');
-ylabel('Errors (θ)','fontname','Times New Roman','fontsize',18');
+xlabel('input angle (deg)','fontname','Times New Roman','fontsize',18');
+ylabel('Errors (deg)','fontname','Times New Roman','fontsize',18');
 set(gca, 'Fontname', 'Times New Roman','FontSize',14);
 title('epicycloid reducer error','fontname','標楷體','FontSize',16);
 xlim([0,360]);
 ylim([-0.1,0.1]);
+xticks(0:60:(360));
+box on;
+grid on;
+axis square;
 
 E1_f = figure('Visible', 'on');
 hold on
 plot(f,E1,'LineWidth',2,'Color','b');
+xlabel('input angle (deg)','fontname','Times New Roman','fontsize',18');
+ylabel('Errors (deg)','fontname','Times New Roman','fontsize',18');
 title('\epsilon1','fontname','標楷體','FontSize',16);
 xlim([0,360]);
-ylim([-1,1]);
+ylim([-0.5,0.5]);
+xticks(0:60:(360));
 hold off
+box on;
+grid on;
+axis square;
 
 E2_f = figure('Visible', 'on');
 hold on
 plot(f,E2,'LineWidth',2,'Color','b');
+xlabel('input angle (deg)','fontname','Times New Roman','fontsize',18');
+ylabel('Errors (deg)','fontname','Times New Roman','fontsize',18');
 title('\epsilon2','fontname','標楷體','FontSize',16);
 xlim([0,360]);
-ylim([-1,1]);
+ylim([-0.5,0.5]);
+xticks(0:60:(360));
 hold off
+box on;
+grid on;
+axis square;
 
 E3_f = figure('Visible', 'on');
 hold on
 plot(f,E3,'LineWidth',2,'Color','b');
+xlabel('input angle (deg)','fontname','Times New Roman','fontsize',18');
+ylabel('Errors (deg)','fontname','Times New Roman','fontsize',18');
 title('\epsilon3','fontname','標楷體','FontSize',16);
 xlim([0,360]);
-ylim([-1,1]);
+ylim([-0.5,0.5]);
+xticks(0:60:(360));
 hold off
+box on;
+grid on;
+axis square;
 
 E4_f = figure('Visible', 'on');
 hold on
 plot(f,E4,'LineWidth',2,'Color','b');
+xlabel('input angle (deg)','fontname','Times New Roman','fontsize',18');
+ylabel('Errors (deg)','fontname','Times New Roman','fontsize',18');
 title('\epsilon4','fontname','標楷體','FontSize',16);
 xlim([0,360]);
-ylim([-1,1]);
+ylim([-0.5,0.5]);
+xticks(0:60:(360));
 hold off
+box on;
+grid on;
+axis square;
 
 Ephi_f = figure('Visible', 'on');
 hold on
 plot(f,Ephi,'LineWidth',2,'Color','b');
+xlabel('input angle (deg)','fontname','Times New Roman','fontsize',18');
+ylabel('Errors (deg)','fontname','Times New Roman','fontsize',18');
 title('\epsiloninput','fontname','標楷體','FontSize',16);
 xlim([0,360]);
-ylim([-1,1]);
+ylim([-0.02,0.02]);
+xticks(0:60:(360));
 hold off
+box on;
+grid on;
+axis square;
 
-j = figure('Visible', 'on');
+j = figure('Visible', 'off');
 hold on
 plot(f,theta1,'LineWidth',2,'Color','b');
 plot(f,theta,'LineWidth',2,'Color','g');
+plot(f,theta2,'LineWidth',2,'Color','r');
 xlim([0,360]);
 % % 
 
 
-k = figure('Visible', 'on');
+k = figure('Visible', 'off');
 hold on
 plot(Kx,Ky,'LineWidth',2,'Color','b');
 xlim([0,360]);
