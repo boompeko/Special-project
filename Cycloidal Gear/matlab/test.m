@@ -32,14 +32,18 @@ d2y = diff(dy,t);
 
 Rc = ((dx)^2+(dy)^2)^1.5/(dx*d2y-dy*d2x);
 
+k = 1/Rc == 0;
 
+ans = solve(k,t);
+
+ans
 % disp(dx);
 % disp(dy);
 % disp(d2x);
 % disp(d2y);
 
 
-final_ = simplify(Rc);
+%final_ = simplify(Rc);
 
 
-disp(final_);
+%disp(final_);
