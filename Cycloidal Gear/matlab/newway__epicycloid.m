@@ -48,6 +48,10 @@ for i = 1 : 1 : ((360*CUT*(N-1))+14)
     Kx(i) = R-(Rr-newRc(i))*cos(psi(i));  %曲率中心
     Ky(i) = (Rr-newRc(i))*sin(psi(i));
     k_test(i) = Rr-newRc(i);
+    
+    er(i) = (X(i)^2+Y(i)^2)^0.5;
+
+    tphi(i) = (pi/2-asin((E*(N-1))/R*sin(psi(i) - i/180/CUT*pi)))*180/pi;
 
 %     Xc2(i) = (R)*cos((N-1)*t(i))-(Rr+newRc(i))*cos(phi(i)+(N-1)*t(i));
 %     Yc2(i) = (R)*sin((N-1)*t(i))-(Rr+newRc(i))*sin(phi(i)+(N-1)*t(i));
