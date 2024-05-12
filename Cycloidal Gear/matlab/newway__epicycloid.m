@@ -96,12 +96,13 @@ axis square;
 
 z(1) = 0;
 bRc(1) = newRc(360*CUT*(N-1));
+cRc(1) = 1/newRc(360*CUT*(N-1));
 
 for i = 1 : 1 : ceil(360*CUT)
 
     z(i+1) = i/CUT;
     bRc(i+1) = newRc(i);
-
+    cRc(i+1) = 1/newRc(i);
 end
 
 
@@ -113,6 +114,21 @@ set(gca, 'Fontname', 'Times New Roman','FontSize',14);
 title('曲率半徑','FontSize',16);
 xlim([0,360]);
 ylim([-R,R]);
+xticks(0:60:(360));
+yticks(-R:tick:R);
+
+box on;
+grid on;
+axis square;
+
+c = figure('Visible', 'on');
+plot(z,cRc,'LineWidth',2, 'Color','b');
+xlabel('input angle (deg)','fontname','Times New Roman','fontsize',18');
+ylabel('radius of curvature (mm)','fontname','Times New Roman','fontsize',18');
+set(gca, 'Fontname', 'Times New Roman','FontSize',14);
+title('曲率半徑','FontSize',16);
+xlim([0,360]);
+ylim([-0.1,0.1]);
 xticks(0:60:(360));
 yticks(-R:tick:R);
 
@@ -509,8 +525,12 @@ axis square;
 %生成scr
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 
-scrfilename = fullfile(file_path, 'Cycloidal_Drive_epicycloid.scr');
-fid = fopen(scrfilename,'w');
-fprintf(fid,'spline ');
-fprintf(fid,'%f,%f\n', [X; Y]);
-fclose(fid);
+% scrfilename = fullfile(file_path, 'Cycloidal_Drive_epicycloid.scr');
+% fid = fopen(scrfilename,'w');
+% fprintf(fid,'spline ');
+% fprintf(fid,'%f,%f\n', [X; Y]);
+% fclose(fid);
+
+[ans] = newRrcal_epicycloid(15,120,5,18,0.057560592920962710041210399673131);
+
+1/ans

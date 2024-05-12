@@ -145,7 +145,7 @@ for i=1:1:360*CUT+1
     theta(i) = atan2((Ory(i) - Ocy(i)),(Orx(i) - Ocx(i)))-OM(i); % 輸出角 依照點與點之間位置算
     theta1(i) = 2*atan((H(i)-(H(i)^2+I(i)^2-J(i)^2)^0.5)/(I(i)+J(i))); % 輸出角 依據講義直接由HIJ 推
     theta2(i) = 2*atan((H(i)+(H(i)^2+I(i)^2-J(i)^2)^0.5)/(I(i)+J(i)));
-    theta3(i) = - phi(i)/N - OM(i);
+    theta3(i) = - phiin(i)/N - OM(i);
 
     E1(i) = ((-b3(i)*cos(theta(i))+b1(i)-b4(i)*cos(phi2(i))))/(H(i)*cos(theta(i))-I(i)*sin(theta(i)))*2*error*180/pi;
 
@@ -261,12 +261,12 @@ box on;
 grid on;
 axis square;
 
-j = figure('Visible', 'off');
+j = figure('Visible', 'on');
 hold on
-plot(f,(theta1),'LineWidth',2,'Color','b');
+%plot(f,abs(theta1),'LineWidth',2,'Color','b');
 plot(f,(theta),'LineWidth',2,'Color','g');
-plot(f,(theta2),'LineWidth',2,'Color','r');
-%plot(f,(theta3),'LineWidth',2,'Color','k');
+%plot(f,abs(theta2),'LineWidth',2,'Color','r');
+plot(f,(theta3),'LineWidth',2,'Color','k');
 
 xlim([0,360]);
 % % 
