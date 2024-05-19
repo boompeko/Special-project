@@ -34,7 +34,7 @@ Rc = ((dx)^2+(dy)^2)^1.5/(dx*d2y-dy*d2x);
 
 k = 1/Rc == 0;
 
-ans = solve(k,t);
+ans = vpasolve(k,t);
 
 ans
 % disp(dx);
