@@ -20,7 +20,7 @@ E =5 ;% Eccentricity - offset from input shaft to a cycloidal disk
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-CUT = 1;%切割倍數
+CUT = 100;%切割倍數
 tick = 40;
 SHOW = sprintf("N = %d, Rr = %d, R = %d, E = %d", N, Rr, R, E);
 file_path = 'C:\Users\JOU\Desktop\git\Special-project\Cycloidal Gear\output'; %家裡電腦
@@ -51,7 +51,7 @@ for i = 1 : 1 : ((360*CUT*(N-1))+14)
     
     er(i) = (X(i)^2+Y(i)^2)^0.5;
 
-    tphi(i) = (pi/2-asin((E*(N-1))/R*sin(psi(i) - i/180/CUT*pi)))*180/pi;
+    tphi(i) = (asin((E*(N-1))/er(i)*sin(pi-psi(i) - phi(i)*(1-N))))*180/pi;
 
 %     Xc2(i) = (R)*cos((N-1)*t(i))-(Rr+newRc(i))*cos(phi(i)+(N-1)*t(i));
 %     Yc2(i) = (R)*sin((N-1)*t(i))-(Rr+newRc(i))*sin(phi(i)+(N-1)*t(i));
