@@ -20,7 +20,7 @@ E =5 ;% Eccentricity - offset from input shaft to a cycloidal disk
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-CUT = 1;%切割倍數
+CUT = 100;%切割倍數
 tick = 40;
 SHOW = sprintf("N = %d, Rr = %d, R = %d, E = %d", N, Rr, R, E);
 file_path = 'C:\Users\JOU\Desktop\git\Special-project\Cycloidal Gear\output'; %家裡電腦
@@ -230,7 +230,7 @@ axis square;
 E1_f = figure('Visible', 'on');
 hold on
 plot(f,E1,'LineWidth',2,'Color','b');
-plot(f,bRc,'LineWidth',2, 'Color','r','LineStyle','--');
+%plot(f,bRc,'LineWidth',2, 'Color','r','LineStyle','--');
 xlabel('input angle (deg)','fontname','Times New Roman','fontsize',18');
 ylabel('Errors (deg)','fontname','Times New Roman','fontsize',18');
 title('\epsilon1','fontname','標楷體','FontSize',16);
@@ -245,7 +245,7 @@ axis square;
 E2_f = figure('Visible', 'on');
 hold on
 plot(f,E2,'LineWidth',2,'Color','b');
-plot(f,bRc,'LineWidth',2, 'Color','r','LineStyle','--');
+%plot(f,bRc,'LineWidth',2, 'Color','r','LineStyle','--');
 xlabel('input angle (deg)','fontname','Times New Roman','fontsize',18');
 ylabel('Errors (deg)','fontname','Times New Roman','fontsize',18');
 title('\epsilon2','fontname','標楷體','FontSize',16);
@@ -260,7 +260,7 @@ axis square;
 E3_f = figure('Visible', 'on');
 hold on
 plot(f,E3,'LineWidth',2,'Color','b');
-plot(f,bRc,'LineWidth',2, 'Color','r','LineStyle','--');
+%plot(f,bRc,'LineWidth',2, 'Color','r','LineStyle','--');
 xlabel('input angle (deg)','fontname','Times New Roman','fontsize',18');
 ylabel('Errors (deg)','fontname','Times New Roman','fontsize',18');
 title('\epsilon3','fontname','標楷體','FontSize',16);
@@ -275,7 +275,7 @@ axis square;
 E4_f = figure('Visible', 'on');
 hold on
 plot(f,E4,'LineWidth',2,'Color','b');
-plot(f,bRc,'LineWidth',2, 'Color','r','LineStyle','--');
+%plot(f,bRc,'LineWidth',2, 'Color','r','LineStyle','--');
 xlabel('input angle (deg)','fontname','Times New Roman','fontsize',18');
 ylabel('Errors (deg)','fontname','Times New Roman','fontsize',18');
 title('\epsilon4','fontname','標楷體','FontSize',16);
@@ -290,7 +290,7 @@ axis square;
 Ephi_f = figure('Visible', 'on');
 hold on
 plot(f,Ephi,'LineWidth',2,'Color','b');
-plot(f,bRc,'LineWidth',2, 'Color','r','LineStyle','--');
+%plot(f,bRc,'LineWidth',2, 'Color','r','LineStyle','--');
 xlabel('input angle (deg)','fontname','Times New Roman','fontsize',18');
 ylabel('Errors (deg)','fontname','Times New Roman','fontsize',18');
 title('\epsiloninput','fontname','標楷體','FontSize',16);
