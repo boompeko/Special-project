@@ -63,9 +63,10 @@ end
 
 a = figure('Visible', 'on');
 plot(X,Y,'LineWidth',2);
-xlabel('X (mm)','fontname','Times New Roman','fontsize',20');
-ylabel('Y (mm)','fontname','Times New Roman','fontsize',20');
-title('擺線輪輪廓','fontsize',20');
+set(gca, 'Fontname', 'Times New Roman','FontSize',14);
+%xlabel('X (mm)','fontname','Times New Roman','fontsize',20');
+%ylabel('Y (mm)','fontname','Times New Roman','fontsize',20');
+%title('擺線輪輪廓','fontsize',20');
 axis equal;
 xlim([-(R+2*Rr),(R+2*Rr)]);
 ylim([-(R+2*Rr),(R+2*Rr)]);
@@ -92,10 +93,10 @@ for i = 1 : 1 : ceil(360*CUT)
 end
 
 
-b = figure('Visible', 'on');
+b = figure('Visible', 'off');
 plot(z,bRc,'LineWidth',2, 'Color','b');
-xlabel('input angle (deg)','fontname','Times New Roman','fontsize',18');
-ylabel('radius of curvature (mm)','fontname','Times New Roman','fontsize',18');
+%xlabel('input angle (deg)','fontname','Times New Roman','fontsize',18');
+%ylabel('radius of curvature (mm)','fontname','Times New Roman','fontsize',18');
 set(gca, 'Fontname', 'Times New Roman','FontSize',14);
 title('曲率半徑','FontSize',16);
 xlim([0,360]);
@@ -169,21 +170,19 @@ end
 
 
 
-g = figure('Visible', 'on');
+TO1 = figure('Visible', 'on');
 hold on
 plot(f,E1,'LineWidth',2,'Color','b');
 plot(f,E2,'LineWidth',2,'Color','r');
 plot(f,E3,'LineWidth',2,'Color','g');
 plot(f,E4,'LineWidth',2,'Color','m');
 plot(f,Ephi,'LineWidth',2,'Color','y');
-plot(f,rss,'LineWidth',2,'Color','c');
-plot(f,max,'LineWidth',2,'Color','k');
-legend("\epsilon1","\epsilon2","\epsilon3","\epsilon4","\epsilon\phi2","\epsilonrms","\epsilonmax")
+legend("\epsilon1","\epsilon2","\epsilon3","\epsilon4","\epsilon\phi2")
 hold off
-xlabel('input angle (deg)','fontname','Times New Roman','fontsize',18');
-ylabel('Errors (deg)','fontname','Times New Roman','fontsize',18');
 set(gca, 'Fontname', 'Times New Roman','FontSize',14);
-title('epicycloid reducer error','fontname','標楷體','FontSize',16);
+xlabel('input angle (deg)','fontname','Times New Roman','fontsize',20');
+ylabel('Errors (deg)','fontname','Times New Roman','fontsize',20');
+%title('epicycloid reducer error','fontname','標楷體','FontSize',16);
 xlim([0,360]);
 ylim([-0.1,0.1]);
 xticks(0:60:(360));
@@ -191,13 +190,30 @@ box on;
 grid on;
 axis square;
 
-E1_f = figure('Visible', 'on');
+TO2 = figure('Visible', 'on');
+hold on
+plot(f,rss,'LineWidth',2,'Color','c');
+plot(f,max,'LineWidth',2,'Color','k');
+legend("\epsilonrms","\epsilonmax")
+hold off
+set(gca, 'Fontname', 'Times New Roman','FontSize',14);
+xlabel('input angle (deg)','fontname','Times New Roman','fontsize',20');
+ylabel('Errors (deg)','fontname','Times New Roman','fontsize',20');
+%title('epicycloid reducer error','fontname','標楷體','FontSize',16);
+xlim([0,360]);
+ylim([0,0.5]);
+xticks(0:60:(360));
+box on;
+grid on;
+axis square;
+
+E1_f = figure('Visible', 'off');
 hold on
 plot(f,(E1),'LineWidth',2,'Color','b');
 plot(f,bRc,'LineWidth',2, 'Color','r','LineStyle','--');
 xlabel('input angle (deg)','fontname','Times New Roman','fontsize',18');
 ylabel('Errors (deg)','fontname','Times New Roman','fontsize',18');
-title('\epsilon1','fontname','標楷體','FontSize',16);
+%title('\epsilon1','fontname','標楷體','FontSize',16);
 xlim([0,360]);
 ylim([-0.5,0.5]);
 xticks(0:60:(360));
@@ -206,13 +222,13 @@ box on;
 grid on;
 axis square;
 
-E2_f = figure('Visible', 'on');
+E2_f = figure('Visible', 'off');
 hold on
 plot(f,(E2),'LineWidth',2,'Color','b');
 plot(f,bRc,'LineWidth',2, 'Color','r','LineStyle','--');
 xlabel('input angle (deg)','fontname','Times New Roman','fontsize',18');
 ylabel('Errors (deg)','fontname','Times New Roman','fontsize',18');
-title('\epsilon2','fontname','標楷體','FontSize',16);
+%title('\epsilon2','fontname','標楷體','FontSize',16);
 xlim([0,360]);
 ylim([-0.5,0.5]);
 xticks(0:60:(360));
@@ -221,13 +237,13 @@ box on;
 grid on;
 axis square;
 
-E3_f = figure('Visible', 'on');
+E3_f = figure('Visible', 'off');
 hold on
 plot(f,(E3),'LineWidth',2,'Color','b');
 plot(f,bRc,'LineWidth',2, 'Color','r','LineStyle','--');
 xlabel('input angle (deg)','fontname','Times New Roman','fontsize',18');
 ylabel('Errors (deg)','fontname','Times New Roman','fontsize',18');
-title('\epsilon3','fontname','標楷體','FontSize',16);
+%title('\epsilon3','fontname','標楷體','FontSize',16);
 xlim([0,360]);
 ylim([-0.5,0.5]);
 xticks(0:60:(360));
@@ -236,7 +252,7 @@ box on;
 grid on;
 axis square;
 
-E4_f = figure('Visible', 'on');
+E4_f = figure('Visible', 'off');
 hold on
 plot(f,(E4),'LineWidth',2,'Color','b');
 plot(f,bRc,'LineWidth',2, 'Color','r','LineStyle','--');
@@ -254,9 +270,10 @@ axis square;
 Ephi_f = figure('Visible', 'on');
 hold on
 plot(f,Ephi,'LineWidth',2,'Color','b');
-xlabel('input angle (deg)','fontname','Times New Roman','fontsize',18');
-ylabel('Errors (deg)','fontname','Times New Roman','fontsize',18');
-title('\epsiloninput','fontname','標楷體','FontSize',16);
+set(gca, 'Fontname', 'Times New Roman','FontSize',14);
+xlabel('input angle (deg)','fontname','Times New Roman','fontsize',20');
+ylabel('Errors (deg)','fontname','Times New Roman','fontsize',20');
+%title('\epsiloninput','fontname','標楷體','FontSize',16);
 xlim([0,360]);
 ylim([-0.02,0.02]);
 xticks(0:60:(360));
@@ -265,7 +282,7 @@ box on;
 grid on;
 axis square;
 
-j = figure('Visible', 'on');
+j = figure('Visible', 'off');
 hold on
 %plot(f,abs(theta1),'LineWidth',2,'Color','b');
 plot(f,(theta),'LineWidth',2,'Color','g');
