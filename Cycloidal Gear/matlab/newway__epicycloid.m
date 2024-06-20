@@ -3,7 +3,6 @@ clear;
 clc;
 close all;
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %參數
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -12,7 +11,7 @@ close all;
 
 N = 15 ;%Number of rollers
 Rr = 18 ;%Radius of the roller
-R = 120 ;%Radius of the rollers PCD (Pitch Circle Diamater)
+R = 130 ;%Radius of the rollers PCD (Pitch Circle Diamater)
 E =5 ;% Eccentricity - offset from input shaft to a cycloidal disk
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -20,7 +19,7 @@ E =5 ;% Eccentricity - offset from input shaft to a cycloidal disk
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-CUT = 100;%切割倍數
+CUT = 1;%切割倍數
 tick = 40;
 SHOW = sprintf("N = %d, Rr = %d, R = %d, E = %d", N, Rr, R, E);
 file_path = 'C:\Users\JOU\Desktop\git\Special-project\Cycloidal Gear\output'; %家裡電腦
@@ -67,21 +66,19 @@ end
 
 a = figure('Visible', 'on');
 plot(X,Y,'LineWidth',2,'Color','b');
-set(gca,'FontSize',14');
 %xlabel('X (mm)','fontname','Times New Roman','fontsize',20);
 %ylabel('Y (mm)','fontname','Times New Roman','fontsize',20);
 set(gca, 'Fontname', 'Times New Roman','FontSize',14);
 %title('擺線輪輪廓',SHOW);
-title('擺線輪輪廓','fontsize',20);
-set(gca,'FontSize',16);
+%title('擺線輪輪廓','fontsize',20);
 axis equal;
-xlim([-(R),(R)]);
+xlim([-(120),(120)]);
 ylim([-(R),(R)]);
-xticks(-2*R:tick:2*R);
-yticks(-2*R:tick:2*R);
+% xticks(-2*R:tick:2*R);
+% yticks(-2*R:tick:2*R);
 
 box on;
-grid on;
+%grid on;
 axis square;
 
 % file_name = '外擺線輪.png';
@@ -156,10 +153,12 @@ axis square;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-
+syms e1 e_r e_Rr e4 x;
 
 for i=1:1:(360*CUT+1)
     
+    
+
     phi2(i) =  -i / (180*CUT) * pi   ; % 輸入角phi2
     
  
@@ -174,7 +173,7 @@ for i=1:1:(360*CUT+1)
     a4(i) = E;
     
     
-    error = 0.015; %長度誤差
+    
     input_error = 0.1*pi/180; %角度誤差
   
     H(i) = -2*a3(i)*a4(i)*sin(phi2(i));
@@ -186,21 +185,105 @@ for i=1:1:(360*CUT+1)
     theta1(i) = 2*atan((H(i)-(H(i)^2+I(i)^2-J(i)^2)^0.5)/(I(i)+J(i))); % 輸出角 依據講義直接由HIJ 推
     theta(i) = atan2((Ky(i) - Ocy(i)),(Kx(i) - Ocx(i))); % 輸出角 依照點與點之間位置算
     theta2(i) = 2*atan((H(i)+(H(i)^2+I(i)^2-J(i)^2)^0.5)/(I(i)+J(i)));
-
-    E1(i) = ((-a3(i)*cos(theta(i))+a1(i)-a4(i)*cos(phi2(i))))/(H(i)*cos(theta(i))-I(i)*sin(theta(i)))*2*error*180/pi;
-
-    E2(i) = ((-a2(i)))/(H(i)*cos(theta(i))-I(i)*sin(theta(i)))*2*error*180/pi;
     
+    error = 0.022; %長度誤差
+    
+    error_1 = 0.025;
+
+    
+    E1(i) = ((-a3(i)*cos(theta(i))+a1(i)-a4(i)*cos(phi2(i))))/(H(i)*cos(theta(i))-I(i)*sin(theta(i)))*2*error_1*180/pi;
+    
+    if E1(i)> 0.5
+    
+        E1(i) = NaN;
+
+    end
+
+%     E1_eqn = (H(i))*sin(theta(i)+e1)+(I(i)+2*error_1*a3(i))*cos(theta(i)+e1)-(J(i)+2*error_1*a1(i)+error_1^2-2*error_1*a4(i)*cos(phi2(i)));
+%     
+%     T1 = vpasolve(E1_eqn == 0, e1);
+%     if isempty(T1)
+%         E1_sol(i) = NaN;
+%     else
+%         E1_sol(i) =  double(T1*180/pi);
+%     
+%     end
+
+    
+    
+    error_r = 0.022;
+        
+    E2_r(i) = cos(asin(E*(N-1)*sin(phi2(i)+psi(i))/(X(i)^2+Y(i)^2)^0.5))*((-a2(i)))/(H(i)*cos(theta(i))-I(i)*sin(theta(i)))*2*error_r*180/pi;
+    
+    if E2_r(i)> 0.5
+    
+        E2_r(i) = NaN;
+
+    end
+% 
+%     E2_r_eqn = (H(i))*sin(theta(i)+e_r)+(I(i))*cos(theta(i)+e_r)-(J(i)-2*error_r*a2(i)-error_r^2);
+%     
+%     Tr = vpasolve(E2_r_eqn == 0, e_r);
+%     
+%     if isempty(Tr)
+%         E2_r_sol(i) = NaN;
+%     else
+%         E2_r_sol(i) =  double(Tr*180/pi);
+%     
+%     end
+% 
+    error_Rr = 0.011;
+% 
+%     E2_Rr_eqn = (H(i))*sin(theta(i)+e_Rr)+(I(i))*cos(theta(i)+e_Rr)-(J(i)-2*error_Rr*a2(i)-error_Rr^2);
+%     
+%     
+%     TRr = vpasolve(E2_Rr_eqn == 0, e_Rr);
+%     if isempty(TRr)
+%         E2_Rr_sol(i) = NaN;
+%     else
+%         E2_Rr_sol(i) =  double(TRr*180/pi);
+%     
+%     end
+%    
+
+    E2_Rr(i) = ((-a2(i)))/(H(i)*cos(theta(i))-I(i)*sin(theta(i)))*2*error_Rr*180/pi;
+    
+    if E2_Rr(i)> 0.5
+    
+        E2_Rr(i) = NaN;
+
+    end
+
     E3(i) = (a4(i)*cos(phi2(i)-theta(i))+a3(i)-a1(i)*cos(theta(i)))/(H(i)*cos(theta(i))-I(i)*sin(theta(i)))*2*error*180/pi;
-
-    E4(i) = (a3(i)*cos(phi2(i)-theta(i))+a4(i)-a1(i)*cos(phi2(i)))/(H(i)*cos(theta(i))-I(i)*sin(theta(i)))*2*error*180/pi;
     
+    error_4 = 0.008; 
+
+    E4(i) = (a3(i)*cos(phi2(i)-theta(i))+a4(i)-a1(i)*cos(phi2(i)))/(H(i)*cos(theta(i))-I(i)*sin(theta(i)))*2*error_4*180/pi;
+%     
+    if E4(i)> 0.5
+    
+        E4(i) = NaN;
+
+    end
+% 
+%     E4_eqn = (H(i)-2*error_4*a3(i)*sin(phi2(i)))*sin(theta(i)+x)+(I(i)-2*error_4*a3(i)*cos(phi2(i)))*cos(theta(i)+x)-(J(i)+2*error_4*a4(i)+error_4^2-2*error_4*a1(i)*cos(phi2(i)));
+%     
+%     T4 = vpasolve(E4_eqn == 0, x);
+%     if isempty(T4)
+%         E4_sol(i) = NaN;
+%     else
+%         E4_sol(i) =  double(T4*180/pi);
+%     
+%     end
     %Ephi(i) = (a3(i)*a4(i)*cos(phi2(i))*sin(theta(i))-a3(i)*a4(i)*sin(phi2(i))*cos(theta(i))+a1(i)*a4(i)*sin(phi2(i)))/ (H(i)*cos(theta(i))-I(i)*sin(theta(i)))*2*input_error*180/pi;
     Ephi(i) = (a3(i)*a4(i)*sin(theta(i)-phi2(i))+a1(i)*a4(i)*sin(phi2(i)))/ (H(i)*cos(theta(i))-I(i)*sin(theta(i)))*2*input_error*180/pi;
 
-    max(i) = abs(E1(i))+abs(E2(i))+abs(E3(i))+abs(E4(i));
-    rss(i) = ((E1(i))^2+(E2(i))^2+(E3(i))^2+(E4(i))^2)^0.5;
-
+    max(i) = abs(E1(i))+abs(E2_r(i))+abs(E2_Rr(i))+abs(E4(i));
+    rss(i) = ((E1(i))^2+(E2_r(i))^2+(E2_Rr(i))^2+(E4(i))^2)^0.5;
+% 
+%     max_sol(i) = abs(E1_sol(i))+abs(E2_r_sol(i))+abs(E2_Rr_sol(i))+abs(E4_sol(i));
+%     rss_sol(i) = ((E1_sol(i))^2+(E2_r_sol(i))^2+(E2_Rr_sol(i))^2+(E4_sol(i))^2)^0.5;
+% 
 
     f(i) = i/CUT ;
 
@@ -209,11 +292,11 @@ end
 
 TO1 = figure('Visible', 'on');
 hold on
-plot(f,E1,'LineWidth',2,'Color','b');
-plot(f,E2,'LineWidth',2,'Color','r');
-plot(f,E3,'LineWidth',2,'Color','g');
-plot(f,E4,'LineWidth',2,'Color','m');
-legend("\epsilon1","\epsilon2","\epsilon3","\epsilon4")
+plot(f,E2_r,'LineWidth',2,'Color','b','LineStyle','-');
+plot(f,E2_Rr,'LineWidth',2,'Color','r','LineStyle','--');
+plot(f,E1,'LineWidth',2,'Color','g','LineStyle',':');
+plot(f,E4,'LineWidth',2,'Color','m','LineStyle','-.');
+legend("\epsilon_{r}","\epsilon_{Rr}","\epsilon_{1}","\epsilon_{4}")
 hold off
 set(gca,'FontSize',14');
 xlabel('input angle (deg)','fontname','Times New Roman','fontsize',20');
@@ -223,15 +306,31 @@ xlim([0,360]);
 ylim([-0.1,0.1]);
 xticks(0:60:(360));
 
+% TO1_sol = figure('Visible', 'on');
+% hold on
+% plot(f,E2_r_sol,'LineWidth',2,'Color','b','LineStyle','-');
+% plot(f,E2_Rr_sol,'LineWidth',2,'Color','r','LineStyle','--');
+% plot(f,E1_sol,'LineWidth',2,'Color','g','LineStyle',':');
+% plot(f,E4_sol,'LineWidth',2,'Color','m','LineStyle','-.');
+% legend("\epsilon_{r}","\epsilon_{Rr}","\epsilon_{1}","\epsilon_{4}")
+% hold off
+% set(gca,'FontSize',14');
+% xlabel('input angle (deg)','fontname','Times New Roman','fontsize',20');
+% ylabel('Errors (deg)','fontname','Times New Roman','fontsize',20');
+% %title('epicycloid reducer error','fontname','標楷體','FontSize',16);
+% xlim([0,360]);
+% ylim([-0.1,0.1]);
+% xticks(0:60:(360));
+
 box on;
-grid on;
-axis square;
+%grid on;
+%axis square;
 
 TO2 = figure('Visible', 'on');
 hold on
-plot(f,rss,'LineWidth',2,'Color','c');
-plot(f,max,'LineWidth',2,'Color','k');
-legend("\epsilonrms","\epsilonmax");
+plot(f,rss,'LineWidth',2,'Color','c','LineStyle','-');
+plot(f,max,'LineWidth',2,'Color','k','LineStyle','--');
+legend("\epsilon_{rss}","\epsilon_{max}");
 hold off
 set(gca,'FontSize',14');
 xlabel('input angle (deg)','fontname','Times New Roman','fontsize',20');
@@ -241,9 +340,23 @@ xlim([0,360]);
 ylim([0,0.5]);
 xticks(0:60:(360));
 
-box on;
-grid on;
-axis square;
+% TO2_sol = figure('Visible', 'on');
+% hold on
+% plot(f,rss_sol,'LineWidth',2,'Color','c','LineStyle','-');
+% plot(f,max_sol,'LineWidth',2,'Color','k','LineStyle','--');
+% legend("\epsilon_{rss}","\epsilon_{max}");
+% hold off
+% set(gca,'FontSize',14');
+% xlabel('input angle (deg)','fontname','Times New Roman','fontsize',20');
+% ylabel('Errors (deg)','fontname','Times New Roman','fontsize',20');
+% %title('epicycloid reducer error','fontname','標楷體','FontSize',16);
+% xlim([0,360]);
+% ylim([0,0.5]);
+% xticks(0:60:(360));
+% 
+% box on;
+% %grid on;
+% axis square;
 
 E1_f = figure('Visible', 'off');
 hold on
@@ -261,9 +374,25 @@ box on;
 grid on;
 axis square;
 
-E2_f = figure('Visible', 'off');
+E2_r_f = figure('Visible', 'off');
 hold on
-plot(f,E2,'LineWidth',2,'Color','b');
+plot(f,E2_r,'LineWidth',2,'Color','b');
+%plot(f,bRc,'LineWidth',2, 'Color','r','LineStyle','--');
+xlabel('input angle (deg)','fontname','Times New Roman','fontsize',20');
+ylabel('Errors (deg)','fontname','Times New Roman','fontsize',20');
+%title('\epsilon2','fontname','標楷體','FontSize',16);
+xlim([0,360]);
+ylim([-0.5,0.5]);
+xticks(0:60:(360));
+set(gca,'FontSize',16');
+hold off
+box on;
+grid on;
+axis square;
+
+E2_Rr_f = figure('Visible', 'off');
+hold on
+plot(f,E2_Rr,'LineWidth',2,'Color','b');
 %plot(f,bRc,'LineWidth',2, 'Color','r','LineStyle','--');
 xlabel('input angle (deg)','fontname','Times New Roman','fontsize',20');
 ylabel('Errors (deg)','fontname','Times New Roman','fontsize',20');
@@ -323,7 +452,7 @@ xticks(0:60:(360));
 
 hold off
 box on;
-grid on;
+%grid on;
 axis square;
 
 j = figure('Visible', 'off');

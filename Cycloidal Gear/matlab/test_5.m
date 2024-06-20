@@ -3,6 +3,11 @@ syms x y;
 eqns = [x^2 + y^2 == 1, x == y^2];
 
 % 使用 vpasolve 求解方程
-sol = vpasolve(eqns, [x, y]);
-disp('vpasolve 解的结果:');
-disp(sol);
+% sol = vpasolve(eqns, [x, y]);
+% disp('vpasolve 解的结果:');
+% disp(sol);
+
+
+a = (2.275867718036151e+02)*sin(0.015071941203307)+(2.709090649467253e+04)*cos(0.015071941203307)-2.709125956612574e+04
+
+a
