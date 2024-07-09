@@ -20,7 +20,7 @@ E =5 ;% Eccentricity - offset from input shaft to a cycloidal disk
 
 
 CUT = 1;%切割倍數
-tick = 40;
+tick = 30;
 SHOW = sprintf("N = %d, Rr = %d, R = %d, E = %d", N, Rr, R, E);
 file_path = 'C:\Users\JOU\Desktop\git\Special-project\Cycloidal Gear\output'; %家裡電腦
 %file_path = 'C:\Users\Johnny Jou\Documents\GitHub\Special-project\Cycloidal Gear\output';  %筆記電腦
@@ -65,20 +65,20 @@ end
 
 
 a = figure('Visible', 'on');
-plot(X,Y,'LineWidth',2,'Color','b');
+plot(X,Y,'LineWidth',2,'Color','k');
 %xlabel('X (mm)','fontname','Times New Roman','fontsize',20);
 %ylabel('Y (mm)','fontname','Times New Roman','fontsize',20);
 set(gca, 'Fontname', 'Times New Roman','FontSize',14);
 %title('擺線輪輪廓',SHOW);
 %title('擺線輪輪廓','fontsize',20);
 axis equal;
-xlim([-(120),(120)]);
-ylim([-(R),(R)]);
-% xticks(-2*R:tick:2*R);
-% yticks(-2*R:tick:2*R);
+xlim([-(130),(130)]);
+ylim([-130,130]);
+xticks(-120:tick:130);
+yticks(-120:tick:130);
 
 box on;
-%grid on;
+grid on;
 axis square;
 
 % file_name = '外擺線輪.png';
@@ -121,7 +121,7 @@ grid on;
 axis square;
 
 c = figure('Visible', 'on');
-plot(z,cRc,'LineWidth',2, 'Color','b');
+plot(z,cRc,'LineWidth',2, 'Color','k');
 xlabel('input angle (deg)','fontname','Times New Roman','fontsize',18');
 ylabel('radius of curvature (mm)','fontname','Times New Roman','fontsize',18');
 set(gca, 'Fontname', 'Times New Roman','FontSize',14);
@@ -133,12 +133,9 @@ yticks(-R:tick:R);
 
 box on;
 grid on;
-axis square;
 
 
-box on;
-grid on;
-axis square;
+
 
 % file_name = 'radius_of_curvature_epicycloid.png';
 % 
@@ -174,7 +171,7 @@ for i=1:1:(360*CUT+1)
     
     
     
-    input_error = 0.1*pi/180; %角度誤差
+    
   
     H(i) = -2*a3(i)*a4(i)*sin(phi2(i));
     
@@ -275,11 +272,14 @@ for i=1:1:(360*CUT+1)
 %         E4_sol(i) =  double(T4*180/pi);
 %     
 %     end
+    
+    input_error = 0.05*pi/180; %角度誤差
+
     %Ephi(i) = (a3(i)*a4(i)*cos(phi2(i))*sin(theta(i))-a3(i)*a4(i)*sin(phi2(i))*cos(theta(i))+a1(i)*a4(i)*sin(phi2(i)))/ (H(i)*cos(theta(i))-I(i)*sin(theta(i)))*2*input_error*180/pi;
     Ephi(i) = (a3(i)*a4(i)*sin(theta(i)-phi2(i))+a1(i)*a4(i)*sin(phi2(i)))/ (H(i)*cos(theta(i))-I(i)*sin(theta(i)))*2*input_error*180/pi;
 
-    max(i) = abs(E1(i))+abs(E2_r(i))+abs(E2_Rr(i))+abs(E4(i));
-    rss(i) = ((E1(i))^2+(E2_r(i))^2+(E2_Rr(i))^2+(E4(i))^2)^0.5;
+    max(i) = abs(E1(i))+abs(E2_r(i))+abs(E2_Rr(i))+abs(E4(i))++abs(Ephi(i));
+    rss(i) = ((E1(i))^2+(E2_r(i))^2+(E2_Rr(i))^2+(E4(i))^2+(Ephi(i))^2)^0.5;
 % 
 %     max_sol(i) = abs(E1_sol(i))+abs(E2_r_sol(i))+abs(E2_Rr_sol(i))+abs(E4_sol(i));
 %     rss_sol(i) = ((E1_sol(i))^2+(E2_r_sol(i))^2+(E2_Rr_sol(i))^2+(E4_sol(i))^2)^0.5;
@@ -292,19 +292,26 @@ end
 
 TO1 = figure('Visible', 'on');
 hold on
-plot(f,E2_r,'LineWidth',2,'Color','b','LineStyle','-');
+plot(f,E2_r,'LineWidth',2,'Color','r','LineStyle','-');
 plot(f,E2_Rr,'LineWidth',2,'Color','r','LineStyle','--');
-plot(f,E1,'LineWidth',2,'Color','g','LineStyle',':');
-plot(f,E4,'LineWidth',2,'Color','m','LineStyle','-.');
-legend("\epsilon_{r}","\epsilon_{Rr}","\epsilon_{1}","\epsilon_{4}")
+plot(f,E1,'LineWidth',2,'Color','g','LineStyle','-');
+plot(f,E4,'LineWidth',2,'Color','g','LineStyle','--');
+plot(f,Ephi,'LineWidth',2,'Color','b','LineStyle','-');
+legend("\epsilon_{r}","\epsilon_{Rr}","\epsilon_{1}","\epsilon_{4}","\epsilon_{\phi}",'Location','northeastoutside')
+set(legend,'FontSize',20');
 hold off
 set(gca,'FontSize',14');
-xlabel('input angle (deg)','fontname','Times New Roman','fontsize',20');
+xlabel('Input angle (deg)','fontname','Times New Roman','fontsize',20');
 ylabel('Errors (deg)','fontname','Times New Roman','fontsize',20');
 %title('epicycloid reducer error','fontname','標楷體','FontSize',16);
 xlim([0,360]);
 ylim([-0.1,0.1]);
 xticks(0:60:(360));
+
+
+box on;
+grid on;
+
 
 % TO1_sol = figure('Visible', 'on');
 % hold on
@@ -324,21 +331,26 @@ xticks(0:60:(360));
 
 box on;
 %grid on;
-%axis square;
+
 
 TO2 = figure('Visible', 'on');
 hold on
-plot(f,rss,'LineWidth',2,'Color','c','LineStyle','-');
-plot(f,max,'LineWidth',2,'Color','k','LineStyle','--');
-legend("\epsilon_{rss}","\epsilon_{max}");
+plot(f,rss,'LineWidth',2,'Color','r','LineStyle','-');
+plot(f,max,'LineWidth',2,'Color','g','LineStyle','-');
+legend("\epsilon_{rss}","\epsilon_{max}",'Location','northeastoutside');
+set(legend,'FontSize',20');
 hold off
 set(gca,'FontSize',14');
-xlabel('input angle (deg)','fontname','Times New Roman','fontsize',20');
+xlabel('Input angle (deg)','fontname','Times New Roman','fontsize',20');
 ylabel('Errors (deg)','fontname','Times New Roman','fontsize',20');
 %title('epicycloid reducer error','fontname','標楷體','FontSize',16);
 xlim([0,360]);
 ylim([0,0.5]);
 xticks(0:60:(360));
+
+
+box on;
+grid on;
 
 % TO2_sol = figure('Visible', 'on');
 % hold on

@@ -62,7 +62,7 @@ end
 
 
 a = figure('Visible', 'on');
-plot(X,Y,'LineWidth',2,'Color','k');
+plot(X,Y,'LineWidth',2,'Color','b');
 set(gca, 'Fontname', 'Times New Roman','FontSize',14);
 %xlabel('X (mm)','fontname','Times New Roman','fontsize',20');
 %ylabel('Y (mm)','fontname','Times New Roman','fontsize',20');
@@ -74,7 +74,7 @@ xticks(-2*R:tick:2*R);
 yticks(-2*R:tick:2*R);
 
 box on;
-grid on;
+%grid on;
 axis square;
 
 
@@ -217,12 +217,11 @@ plot(f,E2_r,'LineWidth',2,'Color','r','LineStyle','-');
 plot(f,E2_Rr,'LineWidth',2,'Color','r','LineStyle','--');
 plot(f,E3,'LineWidth',2,'Color','g','LineStyle','-');
 plot(f,E4,'LineWidth',2,'Color','g','LineStyle','--');
-plot(f,Ephi,'LineWidth',2,'Color','b','LineStyle','-');
-legend("\epsilon_{r}","\epsilon_{Rr}","\epsilon_{3}","\epsilon_{4}","\epsilon_{\phi}",'Location','northeastoutside');
-set(legend,'FontSize',20');
+plot(f,Ephi,'LineWidth',2,'Color','g','LineStyle','--');
+legend("\epsilon_{r}","\epsilon_{Rr}","\epsilon_{3}","\epsilon_{4}")
 hold off
 set(gca,'FontSize',14');
-xlabel('Input angle (deg)','fontname','Times New Roman','fontsize',20');
+xlabel('input angle (deg)','fontname','Times New Roman','fontsize',20');
 ylabel('Errors (deg)','fontname','Times New Roman','fontsize',20');
 %title('epicycloid reducer error','fontname','標楷體','FontSize',16);
 xlim([0,360]);
@@ -231,28 +230,25 @@ xticks(0:60:(360));
 
 box on;
 grid on;
+axis square;
 
 TO2 = figure('Visible', 'on');
 hold on
-plot(f,rss,'LineWidth',2,'Color','r','LineStyle','-');
-plot(f,max,'LineWidth',2,'Color','g','LineStyle','-');
-legend("\epsilon_{rss}","\epsilon_{max}",'Location','northeastoutside');
-set(legend,'FontSize',20');
-% lgd = legend;
-% lgd.Layout.Tile = 2;
+plot(f,rss,'LineWidth',2,'Color','c','LineStyle','-');
+plot(f,max,'LineWidth',2,'Color','k','LineStyle','--');
+legend("\epsilon_{rss}","\epsilon_{max}");
 hold off
 set(gca,'FontSize',14');
-xlabel('Input angle (deg)','fontname','Times New Roman','fontsize',20');
+xlabel('input angle (deg)','fontname','Times New Roman','fontsize',20');
 ylabel('Errors (deg)','fontname','Times New Roman','fontsize',20');
 %title('epicycloid reducer error','fontname','標楷體','FontSize',16);
 xlim([0,360]);
 ylim([0,0.5]);
 xticks(0:60:(360));
 
-
 box on;
 grid on;
-
+axis square;
 
 E1_f = figure('Visible', 'off');
 hold on
@@ -334,7 +330,7 @@ box on;
 grid on;
 axis square;
 
-Ephi_f = figure('Visible', 'off');
+Ephi_f = figure('Visible', 'on');
 hold on
 plot(f,Ephi,'LineWidth',2,'Color','b');
 set(gca,'FontSize',14');
