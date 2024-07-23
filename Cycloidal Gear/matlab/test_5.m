@@ -1,13 +1,16 @@
-% 定义要解决的方程
-syms x y;
-eqns = [x^2 + y^2 == 1, x == y^2];
+clc;
+clear;
 
-% 使用 vpasolve 求解方程
-% sol = vpasolve(eqns, [x, y]);
-% disp('vpasolve 解的结果:');
-% disp(sol);
+a=[1,2,3,4,5];
+b=[1,2,3,4,5];
 
-
-a = (2.275867718036151e+02)*sin(0.015071941203307)+(2.709090649467253e+04)*cos(0.015071941203307)-2.709125956612574e+04
-
-a
+figure;
+plot(a,b,LineStyle=":");
+figure;
+plot(a,b,LineStyle="-");
+figure;
+plot(a,b,LineStyle="none");
+figure;
+plot(a,b,LineStyle="-.");
+figure;
+plot(a,b,LineStyle="--");

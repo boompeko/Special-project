@@ -336,7 +336,7 @@ box on;
 TO2 = figure('Visible', 'on');
 hold on
 plot(f,rss,'LineWidth',2,'Color','r','LineStyle','-');
-plot(f,max,'LineWidth',2,'Color','g','LineStyle','-');
+plot(f,max,'LineWidth',2,'Color','g','LineStyle','--');
 legend("\epsilon_{rss}","\epsilon_{max}",'Location','northeastoutside');
 set(legend,'FontSize',20');
 hold off
