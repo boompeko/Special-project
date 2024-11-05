@@ -156,7 +156,7 @@ for i=1:1:360*CUT*15/16
 
     error_r = 0.025;
         
-    E2_r(i) = cos(asin(E*(N-1)*sin(phi2(i)+psi(i))/(X(i)^2+Y(i)^2)^0.5))*((-b2(i)))/(H(i)*cos(theta(i))-I(i)*sin(theta(i)))*2*error_r*180/pi;
+    E2_r(i) = cos(asin(E*(N+1)*sin(phi2(i)-phi(i)+psi(i))/(X(i)^2+Y(i)^2)^0.5))*((-b2(i)))/(H(i)*cos(theta(i))-I(i)*sin(theta(i)))*2*error_r*180/pi;
     
     if E2_r(i)> 0.5
     

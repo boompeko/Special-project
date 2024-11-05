@@ -14,3 +14,5 @@ figure;
 plot(a,b,LineStyle="-.");
 figure;
 plot(a,b,LineStyle="--");
+figure;
+plot(a,b,LineStyle="..");
